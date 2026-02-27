@@ -1,13 +1,28 @@
-﻿namespace MeteoApp;
+﻿using MeteoApp.ViewModels;
+using System.Diagnostics;
+
+namespace MeteoApp;
 
 public partial class MeteoListPage : Shell
 {
     public Dictionary<string, Type> Routes { get; private set; } = new Dictionary<string, Type>();
 
-    public MeteoListPage()
+    public MeteoListPage(MeteoViewModel viewModel)
 	{
 		InitializeComponent();
         RegisterRoutes();
+
+        viewModel.GetWeatherAsync("Rome").ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.WriteLine($"Error fetching weather data: {task.Exception}");
+            }
+            else
+            {
+                Debug.WriteLine("Weather data fetched successfully.");
+            }
+        });
 
         BindingContext = new MeteoListViewModel();
     }

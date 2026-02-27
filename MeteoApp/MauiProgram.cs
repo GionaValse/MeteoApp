@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MeteoApp.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace MeteoApp;
 
@@ -16,8 +19,23 @@ public static class MauiProgram
 			});
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly());
+        builder.Logging.AddDebug();
 #endif
+
+        // var assembly = Assembly.GetExecutingAssembly();
+        // using var stream = assembly.GetManifestResourceStream("MeteoApp.appsettings.json");
+        // if (stream != null)
+        // {
+        //     builder.Configuration.AddJsonStream(stream);
+        // }
+
+        builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+        builder.Services.AddSingleton<HttpClient>();
+        
+		builder.Services.AddTransient<MeteoViewModel>();
+		builder.Services.AddTransient<MeteoListPage>();
+
         return builder.Build();
 	}
 }

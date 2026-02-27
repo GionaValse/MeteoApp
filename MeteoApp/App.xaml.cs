@@ -2,10 +2,10 @@
 
 public partial class App : Application
 {
-    public App()
+    public App(MeteoListPage mainPage)
 	{
 		InitializeComponent();
 
-		MainPage = new MeteoListPage();
+		MainPage = mainPage;
 	}
 }
