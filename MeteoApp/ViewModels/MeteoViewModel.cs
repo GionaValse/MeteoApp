@@ -9,7 +9,7 @@ namespace MeteoApp.ViewModels
 
         public MeteoViewModel(IConfiguration configuration, HttpClient httpClient)
         {
-            _apiKey = "";
+            _apiKey = configuration["MeteoApiKey"];
 
             if (string.IsNullOrEmpty(_apiKey))
             {

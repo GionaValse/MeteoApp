@@ -56,6 +56,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.json" />
 	  <None Remove="Models\" />
 	  <None Remove="sqlite-net-pcl" />
 	  <None Remove="Xam.Plugin.Geolocator" />
@@ -71,6 +72,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\.DS_Store" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">

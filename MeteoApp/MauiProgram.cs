@@ -23,12 +23,12 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        // var assembly = Assembly.GetExecutingAssembly();
-        // using var stream = assembly.GetManifestResourceStream("MeteoApp.appsettings.json");
-        // if (stream != null)
-        // {
-        //     builder.Configuration.AddJsonStream(stream);
-        // }
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream("MeteoApp.appsettings.json");
+        if (stream != null)
+        {
+            builder.Configuration.AddJsonStream(stream);
+        }
 
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
         builder.Services.AddSingleton<HttpClient>();
