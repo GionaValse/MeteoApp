@@ -97,4 +97,7 @@
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MeteoApp.Core\MeteoApp.Core.csproj" />
+	</ItemGroup>
 </Project>
