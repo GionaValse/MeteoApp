@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MeteoApp.Core.Models;
 
-public class LocationModel : ILocation
+public interface ILocation
 {
     public double Latitude { get; }
     public double Longitude { get; }
