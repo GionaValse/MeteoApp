@@ -19,27 +19,27 @@ public class Database
     }
 
 
-    private readonly SQLiteAsyncConnection _db;
+    private readonly SQLiteConnection _db;
 
     public Database()
     {
         string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.DatabaseFilename);
-        _db = new SQLiteAsyncConnection(dbPath, Constants.Flags);
-        _db.CreateTableAsync<LocationModel>();
+        _db = new SQLiteConnection(dbPath, Constants.Flags);
+        _db.CreateTable<LocationModel>();
     }
 
-    public async Task<List<LocationModel>> GetAllLocations()
+    public List<LocationModel> GetAllLocations()
     {
-        return await _db.Table<LocationModel>().ToListAsync();
+        return _db.Table<LocationModel>().ToList();
     }
 
-    public async Task<int> SaveLocation(LocationModel location)
+    public int SaveLocation(LocationModel location)
     {
-        return await _db.InsertAsync(location);
+        return _db.Insert(location);
     }
 
-    public async Task<int> DeleteLocation(LocationModel location)
+    public int DeleteLocation(LocationModel location)
     {
-        return await _db.DeleteAsync(location);
+        return  _db.Delete(location);
     }
 }

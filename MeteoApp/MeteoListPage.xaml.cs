@@ -13,11 +13,9 @@ public partial class MeteoListPage : Shell
 
     public MeteoListPage()
     {
-        InitializeComponent();
+         InitializeComponent();
         RegisterRoutes();
-
         _listViewModel = new MeteoListViewModel(new LocationProvider());
-
         BindingContext = _listViewModel;
     }
 
@@ -50,13 +48,13 @@ public partial class MeteoListPage : Shell
         }
     }
 
-    private void OnItemAdded(object sender, EventArgs e)
+    private async void OnItemAdded(object sender, EventArgs e)
     {
-        _ = ShowPrompt();
-    }
-
-    private async Task ShowPrompt()
-    {
-        await DisplayAlertAsync("Add City", "To Be Implemented", "OK");
+        string cityname = await DisplayPromptAsync("Aggiungi città", "Inserisci il nome:");
+        
+        if (!string.IsNullOrEmpty(cityname))
+        {
+            ((MeteoListViewModel)BindingContext).InsertLocation(cityname);
+        }
     }
 }
