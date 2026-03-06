@@ -1,4 +1,6 @@
-﻿using MeteoApp.ViewModels;
+﻿using MeteoApp.Core.Models;
+using MeteoApp.Services;
+using MeteoApp.ViewModels;
 using System.Diagnostics;
 
 namespace MeteoApp;
@@ -7,24 +9,22 @@ public partial class MeteoListPage : Shell
 {
     public Dictionary<string, Type> Routes { get; private set; } = new Dictionary<string, Type>();
 
-    public MeteoListPage(MeteoViewModel viewModel)
-	{
-		InitializeComponent();
+    private MeteoListViewModel _listViewModel;
+
+    public MeteoListPage()
+    {
+        InitializeComponent();
         RegisterRoutes();
 
-        viewModel.GetWeatherAsync("Rome").ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.WriteLine($"Error fetching weather data: {task.Exception}");
-            }
-            else
-            {
-                Debug.WriteLine("Weather data fetched successfully.");
-            }
-        });
+        _listViewModel = new MeteoListViewModel(new LocationProvider());
 
-        BindingContext = new MeteoListViewModel();
+        BindingContext = _listViewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _listViewModel.LoadCurrentLocationAsync();
     }
 
     private void RegisterRoutes()
@@ -52,11 +52,11 @@ public partial class MeteoListPage : Shell
 
     private void OnItemAdded(object sender, EventArgs e)
     {
-         _ = ShowPrompt();
+        _ = ShowPrompt();
     }
 
     private async Task ShowPrompt()
     {
-        await DisplayAlert("Add City", "To Be Implemented", "OK");
+        await DisplayAlertAsync("Add City", "To Be Implemented", "OK");
     }
 }

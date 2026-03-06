@@ -7,5 +7,5 @@ namespace MeteoApp.Core.Services;
 
 public interface ILocationProvider
 {
-    Task<ILocation> GetLocationAsync();
+    Task<LocationModel?> GetCurrentLocationAsync();
 }

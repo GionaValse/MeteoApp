@@ -1,34 +1,25 @@
-﻿using System.Collections.ObjectModel;
+﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Services;
+using System.Collections.ObjectModel;
 
 namespace MeteoApp
 {
     public class MeteoListViewModel : BaseViewModel
     {
-        ObservableCollection<Entry> _entries;
+        private readonly ILocationProvider _locationProvider;
 
-        public ObservableCollection<Entry> Entries
+        public ObservableCollection<LocationModel> Entries { get; } = new();
+
+        public MeteoListViewModel(ILocationProvider locationProvider)
         {
-            get { return _entries; }
-            set
-            {
-                _entries = value;
-                OnPropertyChanged();
-            }
+            _locationProvider = locationProvider;
         }
 
-        public MeteoListViewModel()
+        public async Task LoadCurrentLocationAsync()
         {
-            Entries = new ObservableCollection<Entry>();
-
-            for (var i = 0; i < 10; i++)
-            {
-                var e = new Entry
-                {
-                    Id = i
-                };
-
-                Entries.Add(e);
-            }
+            var location = await _locationProvider.GetCurrentLocationAsync();
+            if (location != null)
+                Entries.Add(location);
         }
     }
 }
