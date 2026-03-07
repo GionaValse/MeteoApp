@@ -1,15 +1,17 @@
-﻿namespace MeteoApp;
+﻿using MeteoApp.Core.Models;
 
-[QueryProperty(nameof(Entry), "Entry")]
+namespace MeteoApp;
+
+[QueryProperty(nameof(Location), "Location")]
 public partial class MeteoItemPage : ContentPage
 {
-    Entry entry;
-    public Entry Entry
+    private LocationModel _location;
+    public LocationModel Location
     {
-        get => entry;
+        get => _location;
         set
         {
-            entry = value;
+            _location = value;
             OnPropertyChanged();
         }
     }
