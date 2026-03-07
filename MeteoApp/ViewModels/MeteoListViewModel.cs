@@ -25,17 +25,16 @@ namespace MeteoApp
         {
             _locationProvider = locationProvider;
             _db = new Database();
-            Locations = new ObservableCollection<LocationModel>(db.GetAllLocations());
+            Locations = new ObservableCollection<LocationModel>();
         }
 
-        public async Task LoadCurrentLocationAsync()
+        public async Task LoadAllLocationsAsync()
         {
             var location = await _locationProvider.GetCurrentLocationAsync();
             if (location != null)
-            {
-                _db.SaveLocation(location); // salva anche la posizione GPS nel db
                 Locations.Add(location);
-            }
+            var data = _db.GetAllLocations();
+            data.ForEach(e => Locations.Add(e));
         }
 
         public void InsertLocation(string name)

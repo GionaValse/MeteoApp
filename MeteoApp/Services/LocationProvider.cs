@@ -8,7 +8,6 @@ public class LocationProvider : ILocationProvider
     public async Task<LocationModel> GetCurrentLocationAsync()
     {
         var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-
         if (status != PermissionStatus.Granted)
         {
             status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
@@ -16,7 +15,8 @@ public class LocationProvider : ILocationProvider
                 return null;
         }
 
-        var location = await Geolocation.GetLocationAsync();
+        var request = new GeolocationRequest(GeolocationAccuracy.Best);
+        var location = await Geolocation.GetLocationAsync(request);
 
         if (location == null)
             return null;

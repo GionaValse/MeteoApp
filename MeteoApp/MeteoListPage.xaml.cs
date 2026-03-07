@@ -13,7 +13,7 @@ public partial class MeteoListPage : Shell
 
     public MeteoListPage()
     {
-         InitializeComponent();
+        InitializeComponent();
         RegisterRoutes();
         _listViewModel = new MeteoListViewModel(new LocationProvider());
         BindingContext = _listViewModel;
@@ -22,7 +22,7 @@ public partial class MeteoListPage : Shell
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _listViewModel.LoadCurrentLocationAsync();
+        await _listViewModel.LoadAllLocationsAsync();
     }
 
     private void RegisterRoutes()
