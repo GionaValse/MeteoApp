@@ -7,5 +7,5 @@ namespace MeteoApp.Core.Services;
 
 public interface IWeatherService
 {
-    Task<WeatherModel> GetWeatherAsync(ILocation location, string apiKey);
+    Task<WeatherModel?> GetWeatherAsync(ILocation location, string apiKey);
 }

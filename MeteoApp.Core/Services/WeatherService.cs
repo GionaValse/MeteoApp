@@ -1,7 +1,5 @@
 ﻿using MeteoApp.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MeteoApp.Core.Models.Weather;
 using System.Text.Json;
 
 namespace MeteoApp.Core.Services;
@@ -15,19 +13,22 @@ public class WeatherService : IWeatherService
         _httpClient = cllient;
     }
 
-    public async Task<WeatherModel> GetWeatherAsync(ILocation location, string apiKey)
+    public async Task<WeatherModel?> GetWeatherAsync(ILocation location, string apiKey)
     {
         var url = $"https://api.openweathermap.org/data/2.5/weather?lat={location.Latitude}&lon={location.Longitude}&appid={apiKey}&units=metric";
 
         var json = await _httpClient.GetStringAsync(url);
 
-        using var doc = JsonDocument.Parse(json);
+        var apiResponse = JsonSerializer.Deserialize<WeatherApiResponse>(json);
+
+        if (apiResponse != null) 
+            return null;
 
         return new WeatherModel
         {
-            Description = doc.RootElement.GetProperty("weather")[0].GetProperty("description").GetString(),
-            Temperature = doc.RootElement.GetProperty("main").GetProperty("temp").GetDouble(),
-            FeelsLike = doc.RootElement.GetProperty("main").GetProperty("feels_like").GetDouble()
+            Description = apiResponse.weather.First().description,
+            Temperature = apiResponse.main.temp,
+            FeelsLike = apiResponse.main.feels_like
         };
     }
 }
