@@ -11,20 +11,18 @@ public partial class MeteoListPage : Shell
 
     private MeteoListViewModel _listViewModel;
 
-    public MeteoListPage()
+    public MeteoListPage(MeteoListViewModel viewModel)
     {
         InitializeComponent();
         RegisterRoutes();
-
-        _listViewModel = new MeteoListViewModel(new LocationProvider());
-
+        _listViewModel = viewModel;
         BindingContext = _listViewModel;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _listViewModel.LoadCurrentLocationAsync();
+        await _listViewModel.LoadAllLocationsAsync();
     }
 
     private void RegisterRoutes()
@@ -35,28 +33,26 @@ public partial class MeteoListPage : Shell
             Routing.RegisterRoute(item.Key, item.Value);
     }
 
-    private void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (e.SelectedItem != null)
         {
-            Entry entry = e.SelectedItem as Entry;
-
+            LocationModel location = e.SelectedItem as LocationModel;
             var navigationParameter = new Dictionary<string, object>
             {
-                { "Entry", entry }
+                { "Location", location }
             };
-
-            Shell.Current.GoToAsync($"entrydetails", navigationParameter);
+            await Shell.Current.GoToAsync("entrydetails", navigationParameter);
         }
     }
 
-    private void OnItemAdded(object sender, EventArgs e)
+    private async void OnItemAdded(object sender, EventArgs e)
     {
-        _ = ShowPrompt();
-    }
-
-    private async Task ShowPrompt()
-    {
-        await DisplayAlertAsync("Add City", "To Be Implemented", "OK");
+        string cityname = await DisplayPromptAsync("Aggiungi città", "Inserisci il nome:");
+        
+        if (!string.IsNullOrEmpty(cityname))
+        {
+            ((MeteoListViewModel)BindingContext).InsertLocation(cityname);
+        }
     }
 }
