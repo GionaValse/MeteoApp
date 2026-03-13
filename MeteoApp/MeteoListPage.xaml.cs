@@ -1,6 +1,6 @@
 ﻿using MeteoApp.Core.Models;
 using MeteoApp.Services;
-using MeteoApp.ViewModels;
+using MeteoApp.Core.ViewModels;
 using System.Diagnostics;
 
 namespace MeteoApp;
@@ -52,7 +52,7 @@ public partial class MeteoListPage : Shell
         
         if (!string.IsNullOrEmpty(cityname))
         {
-            ((MeteoListViewModel)BindingContext).InsertLocation(cityname);
+            await ((MeteoListViewModel)BindingContext).InsertLocationAsync(cityname);
         }
     }
 }

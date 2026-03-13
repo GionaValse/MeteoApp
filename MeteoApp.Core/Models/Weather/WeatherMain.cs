@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MeteoApp.Core.Models.Weather;
 
 public class WeatherMain
 {
-    public double temp { get; set; }
-    public double feels_like { get; set; }
+    [JsonPropertyName("temp")]
+    public double Temperature { get; set; }
+
+    [JsonPropertyName("feels_like")]
+    public double FeelsLike { get; set; }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MeteoApp.Core.Models.Weather;
 
 public class WeatherDescription
 {
-    public string description { get; set; }
+    [JsonPropertyName("description")]
+    public string Description { get; set; }
 }

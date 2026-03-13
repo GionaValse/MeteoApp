@@ -1,6 +1,6 @@
 ﻿using MeteoApp.Core.Services;
+using MeteoApp.Core.ViewModels;
 using MeteoApp.Services;
-using MeteoApp.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -32,15 +32,19 @@ public static class MauiProgram
             builder.Configuration.AddJsonStream(stream);
         }
 
+        // --- REGISTRATION SYSTEM SERVICES (MAUI) ---
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-		builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
-		builder.Services.AddSingleton<IWeatherService, WeatherService>();
-        builder.Services.AddSingleton<HttpClient>();
-		builder.Services.AddSingleton<Database>();
+        builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
+        builder.Services.AddSingleton<IAppConfigProvider, MauiConfigProvider>();
 
+        // --- REGISTRATION CORE SERVICES ---
+        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<IWeatherService, WeatherService>();
+        builder.Services.AddSingleton<ILocalDatabase, Database>();
+
+        // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();
-        builder.Services.AddTransient<MeteoViewModel>();
-		builder.Services.AddTransient<MeteoListPage>();
+        builder.Services.AddTransient<MeteoListPage>();
 
         return builder.Build();
 	}

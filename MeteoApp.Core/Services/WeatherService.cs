@@ -51,9 +51,9 @@ public class WeatherService : IWeatherService
 
         return new WeatherModel
         {
-            Description = apiResponse.weather.First().description,
-            Temperature = apiResponse.main.temp,
-            FeelsLike = apiResponse.main.feels_like
+            Description = apiResponse.Weather.First().Description,
+            Temperature = apiResponse.Main.Temperature,
+            FeelsLike = apiResponse.Main.FeelsLike
         };
     }
 }

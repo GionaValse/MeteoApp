@@ -1,10 +1,12 @@
 ﻿
+using SQLite;
 using System.Text.Json.Serialization;
 
 namespace MeteoApp.Core.Models;
 
 public class LocationModel : ILocation
 {
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
     [JsonPropertyName("name")]

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MeteoApp.Core.Models.Weather;
 
 public class WeatherApiResponse
 {
-    public WeatherMain main { get; set; }
-    public List<WeatherDescription> weather { get; set; }
+    [JsonPropertyName("weather")]
+    public List<WeatherDescription> Weather { get; set; }
+
+    [JsonPropertyName("main")]
+    public WeatherMain Main { get; set; }
 }

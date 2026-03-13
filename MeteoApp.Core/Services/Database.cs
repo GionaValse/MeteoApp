@@ -3,7 +3,7 @@ using SQLite;
 
 namespace MeteoApp.Core.Services;
 
-public class Database
+public class Database : ILocalDatabase
 {
     private static class Constants
     {
@@ -24,6 +24,12 @@ public class Database
     public Database()
     {
         string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.DatabaseFilename);
+        _db = new SQLiteConnection(dbPath, Constants.Flags);
+        _db.CreateTable<LocationModel>();
+    }
+
+    public Database(string dbPath)
+    {
         _db = new SQLiteConnection(dbPath, Constants.Flags);
         _db.CreateTable<LocationModel>();
     }
