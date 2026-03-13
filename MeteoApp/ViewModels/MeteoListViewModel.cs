@@ -32,7 +32,9 @@ namespace MeteoApp
             Database database,
             IConfiguration config)
         {
+            _apiKey = config["MeteoApiKey"];
             _locationProvider = locationProvider;
+            _weatherService = weatherService;
             _db = database;
             Locations = new ObservableCollection<LocationModel>();
         }
@@ -46,10 +48,16 @@ namespace MeteoApp
             data.ForEach(e => Locations.Add(e));
         }
 
-        public void InsertLocation(string name)
+        public async void InsertLocation(string name)
         {
-            LocationModel location = new LocationModel();
-            location.Name = name;
+            var location = await _weatherService.GetLocationByNameAsync(name, _apiKey);
+
+            if (location == null)
+            {
+                // TODO: feedback to user: no location found
+                return;
+            }
+
             _db.SaveLocation(location);
             Locations.Add(location);
         }
