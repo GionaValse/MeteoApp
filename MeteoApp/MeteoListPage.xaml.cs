@@ -43,6 +43,8 @@ public partial class MeteoListPage : Shell
                 { "Location", location }
             };
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
+
+            ((ListView)sender).SelectedItem = null;
         }
     }
 
