@@ -8,24 +8,33 @@ public class LocationProvider : ILocationProvider
     public async Task<LocationModel> GetCurrentLocationAsync()
     {
         var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-        if (status != PermissionStatus.Granted)
+        if (status != PermissionStatus.Granted && status != PermissionStatus.Restricted)
         {
             status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-            if (status != PermissionStatus.Granted)
+            if (status != PermissionStatus.Granted && status != PermissionStatus.Restricted)
                 return null;
         }
 
-        var request = new GeolocationRequest(GeolocationAccuracy.Best);
-        var location = await Geolocation.GetLocationAsync(request);
+        var accuracy = status == PermissionStatus.Restricted
+            ? GeolocationAccuracy.Low
+            : GeolocationAccuracy.Best;
 
-        if (location == null)
-            return null;
-
-        return new LocationModel
+        try
         {
-            Latitude = location.Latitude,
-            Longitude = location.Longitude,
-            Name = "GPS Location"
-        };
+            var request  = new GeolocationRequest(accuracy, TimeSpan.FromMilliseconds(500));
+            var location = await Geolocation.GetLocationAsync(request);
+
+            if (location == null)
+                return null;
+
+            return new LocationModel
+            {
+                Latitude = location.Latitude,
+                Longitude = location.Longitude,
+                Name = "GPS Location"
+            };
+        }
+        catch (FeatureNotEnabledException) { return null; }
+        catch (PermissionException)        { return null; }
     }
 }
