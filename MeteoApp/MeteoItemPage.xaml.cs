@@ -1,4 +1,5 @@
 ﻿using MeteoApp.Core.Models;
+using MeteoApp.ViewModels;
 
 namespace MeteoApp;
 
@@ -16,14 +17,30 @@ public partial class MeteoItemPage : ContentPage
         }
     }
 
-    public MeteoItemPage()
+    private WeatherModel _weather;
+    public WeatherModel Weather
+    {
+        get => _weather;
+        set
+        {
+            _weather = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private MeteoViewModel _viewModel;
+
+
+    public MeteoItemPage(MeteoViewModel meteoViewModel)
     {
         InitializeComponent();
+        _viewModel = meteoViewModel;
         BindingContext = this;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
+        Weather = await _viewModel.GetWeatherAsync(Location);
     }
 }

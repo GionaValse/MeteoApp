@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeteoApp.MeteoItemPage">
-    <StackLayout x:Name="MainLayout" Spacing="30">
-            <Label Text="{Binding Location.Name}"
-                FontSize="55"
-                HorizontalOptions="Center" 
-                VerticalOptions="Start" />
-        </StackLayout>
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*">
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Location.Name}" FontSize="55" HorizontalOptions="Center"/>
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.Description}" HorizontalOptions="Center"/>
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.Temperature, StringFormat='{0:F1} °C'}" HorizontalOptions="Center"/>
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.FeelsLike, StringFormat='{0:F1} °C'}" HorizontalOptions="Center"/>
+        </Grid>
 </ContentPage>
 

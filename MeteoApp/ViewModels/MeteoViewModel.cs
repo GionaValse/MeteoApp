@@ -1,41 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace MeteoApp.ViewModels
 {
     public class MeteoViewModel
     {
         private readonly string _apiKey;
-        private readonly HttpClient _httpClient;
+        private readonly IWeatherService _weatherService;
 
-        public MeteoViewModel(IConfiguration configuration, HttpClient httpClient)
+        public MeteoViewModel(IConfiguration configuration, IWeatherService weatherService)
         {
             _apiKey = configuration["MeteoApiKey"];
-
-            if (string.IsNullOrEmpty(_apiKey))
-            {
-                throw new InvalidOperationException("MeteoApiKey non trovata nei segreti utente!");
-            }
-
-            _httpClient = httpClient;
+            _weatherService = weatherService;
         }
 
-        public async Task<string> GetWeatherAsync(string city)
+        public async Task<WeatherModel> GetWeatherAsync(LocationModel location)
         {
-            try
-            {
-                var url = $"https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid={_apiKey}";
-
-                var response = await _httpClient.GetStringAsync(url);
-
-                Console.WriteLine($"Meteo response: {response}");
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Errore durante la chiamata API: {ex.Message}");
-                return null;
-            }
+            return await _weatherService.GetWeatherAsync(location, _apiKey);
         }
     }
 }
