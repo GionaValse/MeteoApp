@@ -56,4 +56,22 @@ public class WeatherService : IWeatherService
             FeelsLike = apiResponse.main.feels_like
         };
     }
+
+    public async Task<string?> GetNameByPostionAsync(ILocation location, string apiKey)
+    {
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            throw new InvalidOperationException("MeteoApiKey non trovata nei segreti utente!");
+        }
+
+        var url = $"{_apiUrl}/geo/1.0/reverse?lat={location.Latitude}&lon={location.Longitude}&limit=1&appid={apiKey}";
+
+        var json = await _httpClient.GetStringAsync(url);
+        var apiResponse = JsonSerializer.Deserialize<List<GeoResult>>(json);
+
+        if (apiResponse == null) 
+            return null;
+
+        return apiResponse[0].Name;
+    }
 }

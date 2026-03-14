@@ -9,4 +9,5 @@ public interface IWeatherService
 {
     Task<LocationModel?> GetLocationByNameAsync(string cityName, string apiKey);
     Task<WeatherModel?> GetWeatherAsync(ILocation location, string apiKey);
+    Task<string?> GetNameByPostionAsync(ILocation location, string apiKey);
 }

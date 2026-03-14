@@ -43,7 +43,10 @@ namespace MeteoApp
         {
             var location = await _locationProvider.GetCurrentLocationAsync();
             if (location != null)
-                Locations.Add(location);
+            {
+                location.Name = await _weatherService.GetNameByPostionAsync(location, _apiKey);
+                Locations.Add(location);                
+            }
             var data = _db.GetAllLocations();
             data.ForEach(e => Locations.Add(e));
         }
