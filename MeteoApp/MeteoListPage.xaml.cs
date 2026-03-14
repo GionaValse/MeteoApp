@@ -1,7 +1,5 @@
 ﻿using MeteoApp.Core.Models;
-using MeteoApp.Services;
 using MeteoApp.Core.ViewModels;
-using System.Diagnostics;
 
 namespace MeteoApp;
 
@@ -42,7 +40,10 @@ public partial class MeteoListPage : Shell
             {
                 { "Location", location }
             };
+        
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
+
+            ((ListView)sender).SelectedItem = null;
         }
     }
 
@@ -52,7 +53,13 @@ public partial class MeteoListPage : Shell
         
         if (!string.IsNullOrEmpty(cityname))
         {
-            await ((MeteoListViewModel)BindingContext).InsertLocationAsync(cityname);
+            try
+            {
+                await ((MeteoListViewModel)BindingContext).InsertLocationAsync(cityname);            
+            }catch (KeyNotFoundException ex)
+            {
+                await DisplayAlertAsync("Località non trovata", "pf riprova a mettere un altro nome", "OK");
+            }
         }
     }
 }

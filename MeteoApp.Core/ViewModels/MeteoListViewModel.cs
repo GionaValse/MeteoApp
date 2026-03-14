@@ -42,15 +42,14 @@ public class MeteoListViewModel : BaseViewModel
         var location = await _locationProvider.GetCurrentLocationAsync();
         if (location != null)
         {
+            var apiKey = _config.GetWeatherApiKey();
+            location.Name = await _weatherService.GetNameByPostionAsync(location, apiKey);
             Locations.Add(location);
         }
-
         var data = _db.GetAllLocations();
-        foreach (var e in data)
-        {
-            Locations.Add(e);
-        }
+        data.ForEach(e => Locations.Add(e));
     }
+
 
     public async Task InsertLocationAsync(string name)
     {
@@ -58,11 +57,8 @@ public class MeteoListViewModel : BaseViewModel
         var location = await _weatherService.GetLocationByNameAsync(name, apiKey);
 
         if (location == null)
-        {
-            // TODO: Inviare un messaggio alla UI (es. tramite un event, un delegate o un Messenger)
-            return;
-        }
-
+            throw new KeyNotFoundException();
+        
         _db.SaveLocation(location);
         Locations.Add(location);
     }
