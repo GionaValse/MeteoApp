@@ -1,4 +1,6 @@
-﻿namespace MeteoApp;
+﻿using System.Globalization;
+
+namespace MeteoApp;
 
 public partial class App : Application
 {
@@ -6,6 +8,9 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = mainPage;
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentUICulture;
+
+        MainPage = mainPage;
 	}
 }

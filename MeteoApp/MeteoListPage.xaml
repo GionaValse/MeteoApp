@@ -1,9 +1,10 @@
 ﻿<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeteoApp.MeteoListPage">
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+       x:Class="MeteoApp.MeteoListPage">
     <ContentPage>
         <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Add" Clicked="OnItemAdded" />
+            <ToolbarItem Text="{x:Static res:AppResources.add}" Clicked="OnItemAdded" />
         </ContentPage.ToolbarItems>
 
         <ListView x:Name="zlistView" Margin="20" ItemSelected="OnListItemSelected" ItemsSource="{Binding Locations}">
