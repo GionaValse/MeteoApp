@@ -84,6 +84,9 @@
 	  <EmbeddedResource Include="appsettings.json" />
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="MapPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="MeteoItemPage.xaml">
 	    <SubType>Designer</SubType>
 	  </MauiXaml>
@@ -116,4 +119,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\MeteoApp.Core\MeteoApp.Core.csproj" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="$(MauiVersion)" />
+  </ItemGroup>
 </Project>

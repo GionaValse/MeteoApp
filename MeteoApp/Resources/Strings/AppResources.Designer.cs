@@ -68,5 +68,59 @@ namespace MeteoApp.Resources.Strings {
                 return ResourceManager.GetString("add", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Add city.
+        /// </summary>
+        public static string AddCity {
+            get {
+                return ResourceManager.GetString("AddCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Insert the name:.
+        /// </summary>
+        public static string InsertName {
+            get {
+                return ResourceManager.GetString("InsertName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Location not found.
+        /// </summary>
+        public static string LocationNotFound {
+            get {
+                return ResourceManager.GetString("LocationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Map.
+        /// </summary>
+        public static string map {
+            get {
+                return ResourceManager.GetString("map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Ok.
+        /// </summary>
+        public static string ok {
+            get {
+                return ResourceManager.GetString("ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Try again with another name.
+        /// </summary>
+        public static string TryAnotherName {
+            get {
+                return ResourceManager.GetString("TryAnotherName", resourceCulture);
+            }
+        }
     }
 }

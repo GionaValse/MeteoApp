@@ -1,5 +1,6 @@
 ﻿using MeteoApp.Core.Models;
 using MeteoApp.Core.ViewModels;
+using MeteoApp.Resources.Strings;
 
 namespace MeteoApp;
 
@@ -49,16 +50,21 @@ public partial class MeteoListPage : Shell
 
     private async void OnItemAdded(object sender, EventArgs e)
     {
-        string cityname = await DisplayPromptAsync("Aggiungi città", "Inserisci il nome:");
+        string cityname = await DisplayPromptAsync(AppResources.AddCity, AppResources.InsertName);
         
         if (!string.IsNullOrEmpty(cityname))
         {
             try
             {
                 await ((MeteoListViewModel)BindingContext).InsertLocationAsync(cityname);            
-            }catch (KeyNotFoundException ex)
+            }
+            catch (KeyNotFoundException ex)
             {
-                await DisplayAlertAsync("Località non trovata", "pf riprova a mettere un altro nome", "OK");
+                await DisplayAlertAsync(
+                    AppResources.LocationNotFound, 
+                    AppResources.TryAnotherName, 
+                    AppResources.ok
+                );
             }
         }
     }

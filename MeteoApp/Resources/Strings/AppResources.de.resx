@@ -120,4 +120,22 @@
   <data name="add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
+  <data name="AddCity" xml:space="preserve">
+    <value>Stadt hinzufügen</value>
+  </data>
+  <data name="InsertName" xml:space="preserve">
+    <value>Inserisci il nome:</value>
+  </data>
+  <data name="LocationNotFound" xml:space="preserve">
+    <value>Standort nicht gefunden</value>
+  </data>
+  <data name="map" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="TryAnotherName" xml:space="preserve">
+    <value>Versuchen Sie es erneut mit einem anderen Namen.</value>
+  </data>
 </root>
