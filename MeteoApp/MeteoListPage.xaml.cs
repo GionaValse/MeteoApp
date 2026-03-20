@@ -32,19 +32,18 @@ public partial class MeteoListPage : Shell
             Routing.RegisterRoute(item.Key, item.Value);
     }
 
-    private async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnListItemSelected(object sender, SelectionChangedEventArgs e)
     {
-        if (e.SelectedItem != null)
+        var location = e.CurrentSelection.FirstOrDefault() as LocationModel;
+        
+        if (location != null)
         {
-            LocationModel location = e.SelectedItem as LocationModel;
             var navigationParameter = new Dictionary<string, object>
             {
                 { "Location", location }
             };
-        
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
-
-            ((ListView)sender).SelectedItem = null;
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 
