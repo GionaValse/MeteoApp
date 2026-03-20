@@ -5,6 +5,7 @@
     <ContentPage>
         <ContentPage.ToolbarItems>
             <ToolbarItem Text="{x:Static res:AppResources.add}" Clicked="OnItemAdded" />
+            <ToolbarItem Text="{x:Static res:AppResources.map}" Clicked="GoToMap" />
         </ContentPage.ToolbarItems>
 
         <ListView x:Name="zlistView" Margin="20" ItemSelected="OnListItemSelected" ItemsSource="{Binding Locations}">

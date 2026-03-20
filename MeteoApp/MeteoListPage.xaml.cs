@@ -27,6 +27,7 @@ public partial class MeteoListPage : Shell
     private void RegisterRoutes()
     {
         Routes.Add("entrydetails", typeof(MeteoItemPage));
+        Routes.Add("maps", typeof(MapPage));
 
         foreach (var item in Routes)
             Routing.RegisterRoute(item.Key, item.Value);
@@ -67,5 +68,10 @@ public partial class MeteoListPage : Shell
                 );
             }
         }
+    }
+
+    private async void GoToMap(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("maps");
     }
 }
