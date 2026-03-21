@@ -46,9 +46,12 @@ public static class MauiProgram
 
         // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();
-        builder.Services.AddTransient<MeteoListPage>();
         builder.Services.AddTransient<MeteoViewModel>();
+        builder.Services.AddTransient<MapsViewModel>();
+
+        builder.Services.AddTransient<MeteoListPage>();
         builder.Services.AddTransient<MeteoItemPage>();
+        builder.Services.AddTransient<MapPage>();
 
         return builder.Build();
 	}

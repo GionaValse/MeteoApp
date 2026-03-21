@@ -79,11 +79,38 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Explore locations.
+        /// </summary>
+        public static string ExploreLocation {
+            get {
+                return ResourceManager.GetString("ExploreLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Insert the name:.
         /// </summary>
         public static string InsertName {
             get {
                 return ResourceManager.GetString("InsertName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Locality added.
+        /// </summary>
+        public static string LocalityAdded {
+            get {
+                return ResourceManager.GetString("LocalityAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Locality saved successfully!.
+        /// </summary>
+        public static string LocalitySaved {
+            get {
+                return ResourceManager.GetString("LocalitySaved", resourceCulture);
             }
         }
         
@@ -115,11 +142,29 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Search a city....
+        /// </summary>
+        public static string SearchCity {
+            get {
+                return ResourceManager.GetString("SearchCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Try again with another name.
         /// </summary>
         public static string TryAnotherName {
             get {
                 return ResourceManager.GetString("TryAnotherName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Unknown point.
+        /// </summary>
+        public static string UnknownPoint {
+            get {
+                return ResourceManager.GetString("UnknownPoint", resourceCulture);
             }
         }
     }

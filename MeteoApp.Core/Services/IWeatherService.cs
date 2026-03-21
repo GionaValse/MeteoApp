@@ -7,7 +7,8 @@ namespace MeteoApp.Core.Services;
 
 public interface IWeatherService
 {
-    Task<LocationModel?> GetLocationByNameAsync(string cityName, string apiKey);
-    Task<WeatherModel?> GetWeatherAsync(ILocation location, string apiKey);
-    Task<string?> GetNameByPostionAsync(ILocation location, string apiKey);
+    Task<LocationModel?> GetLocationByNameAsync(string cityName);
+    Task<LocationModel?> GetLocationByLatLonAsync(float lat, float lon);
+    Task<WeatherModel?> GetWeatherAsync(ILocation location);
+    Task<string?> GetNameByPostionAsync(ILocation location);
 }

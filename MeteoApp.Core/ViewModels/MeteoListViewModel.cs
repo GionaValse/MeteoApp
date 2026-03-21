@@ -9,7 +9,6 @@ public class MeteoListViewModel : BaseViewModel
     private readonly ILocationProvider _locationProvider;
     private readonly ILocalDatabase _db;
     private readonly IWeatherService _weatherService;
-    private readonly IAppConfigProvider _config;
 
     private ObservableCollection<LocationModel> _locations;
     public ObservableCollection<LocationModel> Locations
@@ -25,36 +24,40 @@ public class MeteoListViewModel : BaseViewModel
     public MeteoListViewModel(
         ILocationProvider locationProvider,
         IWeatherService weatherService,
-        ILocalDatabase database,
-        IAppConfigProvider config)
+        ILocalDatabase database)
     {
         _locationProvider = locationProvider;
         _weatherService = weatherService;
         _db = database;
-        _config = config;
 
-        _locations = new ObservableCollection<LocationModel>();
         Locations = new ObservableCollection<LocationModel>();
     }
 
     public async Task LoadAllLocationsAsync()
     {
-        var location = await _locationProvider.GetCurrentLocationAsync();
-        if (location != null)
+        var tempStack = new List<LocationModel>();
+
+        var currentLoc = await _locationProvider.GetCurrentLocationAsync();
+        if (currentLoc != null)
         {
-            var apiKey = _config.GetWeatherApiKey();
-            location.Name = await _weatherService.GetNameByPostionAsync(location, apiKey);
-            Locations.Add(location);
+            var name = await _weatherService.GetNameByPostionAsync(currentLoc);
+            currentLoc.Name = name ?? "";
+            tempStack.Add(currentLoc);
         }
+
         var data = _db.GetAllLocations();
-        data.ForEach(e => Locations.Add(e));
+        if (data != null)
+        {
+            tempStack.AddRange(data);
+        }
+
+        Locations = new ObservableCollection<LocationModel>(tempStack);
     }
 
 
     public async Task InsertLocationAsync(string name)
     {
-        var apiKey = _config.GetWeatherApiKey();
-        var location = await _weatherService.GetLocationByNameAsync(name, apiKey);
+        var location = await _weatherService.GetLocationByNameAsync(name);
 
         if (location == null)
             throw new KeyNotFoundException();

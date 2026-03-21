@@ -21,7 +21,11 @@ public partial class MeteoListPage : Shell
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _listViewModel.LoadAllLocationsAsync();
+
+        if (_listViewModel != null)
+        {
+            await _listViewModel.LoadAllLocationsAsync();
+        }
     }
 
     private void RegisterRoutes()

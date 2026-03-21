@@ -27,14 +27,23 @@ public class LocationProvider : ILocationProvider
             if (location == null)
                 return null;
 
+            var placemarks = await Geocoding.Default.GetPlacemarksAsync(location.Latitude, location.Longitude);
+            var place = placemarks?.FirstOrDefault();
+
             return new LocationModel
             {
                 Latitude = location.Latitude,
                 Longitude = location.Longitude,
-                Name = "GPS Location"
+                Name = place.Locality ?? ""
             };
         }
         catch (FeatureNotEnabledException) { return null; }
         catch (PermissionException)        { return null; }
+    }
+
+    public async Task<bool> IsAvailableAsync()
+    {
+        var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+        return status == PermissionStatus.Granted;
     }
 }

@@ -8,4 +8,5 @@ namespace MeteoApp.Core.Services;
 public interface ILocationProvider
 {
     Task<LocationModel?> GetCurrentLocationAsync();
+    Task<bool> IsAvailableAsync();
 }

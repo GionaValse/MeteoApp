@@ -123,8 +123,17 @@
   <data name="AddCity" xml:space="preserve">
     <value>Aggiungi città</value>
   </data>
+  <data name="ExploreLocation" xml:space="preserve">
+    <value>Esplora Località</value>
+  </data>
   <data name="InsertName" xml:space="preserve">
     <value>Inserisci il nome:</value>
+  </data>
+  <data name="LocalityAdded" xml:space="preserve">
+    <value>Località aggiunta</value>
+  </data>
+  <data name="LocalitySaved" xml:space="preserve">
+    <value>Località salvata con successo!</value>
   </data>
   <data name="LocationNotFound" xml:space="preserve">
     <value>Località non trovata</value>
@@ -135,7 +144,13 @@
   <data name="ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>Cerca una città...</value>
+  </data>
   <data name="TryAnotherName" xml:space="preserve">
     <value>Riprova a con un altro nome</value>
+  </data>
+  <data name="UnknownPoint" xml:space="preserve">
+    <value>Punto sconosiuto</value>
   </data>
 </root>
