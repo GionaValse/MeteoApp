@@ -13,15 +13,19 @@ public class MeteoListViewModelTests
     [Fact]
     public async Task LoadAllLocationsAsync_ShouldPopulateLocations_FromGpsAndDatabase()
     {
+        // 1. ARRANGE
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
         var mockDb = new Mock<ILocalDatabase>();
-        var mockConfig = new Mock<IAppConfigProvider>();
 
-        var currentLocation = new LocationModel { Id = 1, Name = "Lugano", Latitude = 46.0037, Longitude = 8.9511 };
+        var currentLocation = new LocationModel { Id = 1, Latitude = 46.0037, Longitude = 8.9511 };
         mockLocationProvider
             .Setup(p => p.GetCurrentLocationAsync())
             .ReturnsAsync(currentLocation);
+
+        mockWeatherService
+            .Setup(ws => ws.GetNameByPostionAsync(currentLocation))
+            .ReturnsAsync("Lugano");
 
         var savedLocations = new List<LocationModel>
         {
@@ -35,12 +39,13 @@ public class MeteoListViewModelTests
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object,
-            mockConfig.Object
+            mockDb.Object
         );
 
+        // 2. ACT
         await viewModel.LoadAllLocationsAsync();
 
+        // 3. ASSERT
         Assert.Equal(3, viewModel.Locations.Count);
 
         Assert.Equal("Lugano", viewModel.Locations[0].Name);
@@ -48,6 +53,7 @@ public class MeteoListViewModelTests
         Assert.Equal("Milano", viewModel.Locations[2].Name);
 
         mockLocationProvider.Verify(p => p.GetCurrentLocationAsync(), Times.Once);
+        mockWeatherService.Verify(ws => ws.GetNameByPostionAsync(currentLocation), Times.Once);
         mockDb.Verify(db => db.GetAllLocations(), Times.Once);
     }
 
@@ -58,20 +64,17 @@ public class MeteoListViewModelTests
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
         var mockDb = new Mock<ILocalDatabase>();
-        var mockConfig = new Mock<IAppConfigProvider>();
-
-        mockConfig.Setup(c => c.GetWeatherApiKey()).Returns("test-key");
 
         var expectedLocation = new LocationModel { Name = "Napoli", Latitude = 40.8518, Longitude = 14.2681 };
+
         mockWeatherService
-            .Setup(ws => ws.GetLocationByNameAsync("Napoli", "test-key"))
+            .Setup(ws => ws.GetLocationByNameAsync("Napoli"))
             .ReturnsAsync(expectedLocation);
 
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object,
-            mockConfig.Object
+            mockDb.Object
         );
 
         // 2. ACT
@@ -85,33 +88,28 @@ public class MeteoListViewModelTests
     }
 
     [Fact]
-    public async Task InsertLocationAsync_ShouldNotSave_WhenCityIsNotFound()
+    public async Task InsertLocationAsync_ShouldThrowExceptionAndNotSave_WhenCityIsNotFound()
     {
         // 1. ARRANGE
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
         var mockDb = new Mock<ILocalDatabase>();
-        var mockConfig = new Mock<IAppConfigProvider>();
-
-        mockConfig.Setup(c => c.GetWeatherApiKey()).Returns("test-key");
 
         mockWeatherService
-            .Setup(ws => ws.GetLocationByNameAsync("Paperopoli", "test-key"))
+            .Setup(ws => ws.GetLocationByNameAsync("Paperopoli"))
             .ReturnsAsync((LocationModel?)null);
 
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object,
-            mockConfig.Object
+            mockDb.Object
         );
 
-        // 2. ACT
-        await viewModel.InsertLocationAsync("Paperopoli");
+        // 2. ACT & 3. ASSERT
+        await Assert.ThrowsAsync<KeyNotFoundException>(() =>
+            viewModel.InsertLocationAsync("Paperopoli"));
 
-        // 3. ASSERT
         Assert.Empty(viewModel.Locations);
-
         mockDb.Verify(db => db.SaveLocation(It.IsAny<LocationModel>()), Times.Never);
     }
 }
