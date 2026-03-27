@@ -47,11 +47,12 @@ public partial class MeteoListPage : Shell
             Routing.RegisterRoute(item.Key, item.Value);
     }
 
-    private async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnListItemSelected(object sender, SelectionChangedEventArgs e)
     {
-        if (e.SelectedItem != null)
+        var location = e.CurrentSelection.FirstOrDefault() as LocationModel;
+
+        if (location != null)
         {
-            LocationModel location = e.SelectedItem as LocationModel;
             var navigationParameter = new Dictionary<string, object>
             {
                 { "Location", location }
@@ -59,7 +60,7 @@ public partial class MeteoListPage : Shell
         
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
 
-            ((ListView)sender).SelectedItem = null;
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 
@@ -87,5 +88,21 @@ public partial class MeteoListPage : Shell
     private async void GoToMap(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("maps");
+    }
+
+    private async void OnDeleteSwipeItemInvoked(object sender, EventArgs e)
+    {
+        var swipeItem = sender as SwipeItem;
+        var location = swipeItem?.BindingContext as LocationModel;
+
+        if (location == null || !location.IsNotGpsLocation)
+            return;
+
+        bool answer = await DisplayAlertAsync("Conferma", $"Vuoi eliminare {location.Name}?", "Sì", "No");
+
+        if (answer)
+        {
+            await _listViewModel.RemoveLocationAsync(location);
+        }
     }
 }

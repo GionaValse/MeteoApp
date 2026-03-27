@@ -42,6 +42,7 @@ public class MeteoListViewModel : BaseViewModel
         {
             var name = await _weatherService.GetNameByPostionAsync(currentLoc);
             currentLoc.Name = name ?? "";
+            currentLoc.IsNotGpsLocation = false;
             tempStack.Add(currentLoc);
         }
 
@@ -64,5 +65,13 @@ public class MeteoListViewModel : BaseViewModel
         
         _db.SaveLocation(location);
         Locations.Add(location);
+    }
+
+    public async Task RemoveLocationAsync(LocationModel location)
+    {
+        if (location == null)
+            return;
+        _db.DeleteLocation(location);
+        Locations.Remove(location);
     }
 }

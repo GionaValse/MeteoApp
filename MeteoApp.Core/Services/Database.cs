@@ -36,7 +36,9 @@ public class Database : ILocalDatabase
 
     public List<LocationModel> GetAllLocations()
     {
-        return _db.Table<LocationModel>().ToList();
+        var locations = _db.Table<LocationModel>().ToList();
+        locations.ForEach(l => l.IsNotGpsLocation = true);
+        return locations;
     }
 
     public int SaveLocation(LocationModel location)

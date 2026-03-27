@@ -17,4 +17,7 @@ public class LocationModel : ILocation
 
     [JsonPropertyName("lon")]
     public double Longitude { get; set; }
+
+    [JsonIgnore]
+    public bool IsNotGpsLocation { get; set; }
 }

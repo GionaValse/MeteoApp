@@ -28,7 +28,7 @@ public class NotificationProvider : INotificationProvider
         token = await Plugin.Firebase.CloudMessaging.CrossFirebaseCloudMessaging.Current.GetTokenAsync();
         System.Diagnostics.Debug.WriteLine("Token generated: " + token);
         Console.WriteLine("Token generated: " + token);
-        await Clipboard.Default.SetTextAsync(token);
+        // await Clipboard.Default.SetTextAsync(token);
 #endif
         return token;
     }
