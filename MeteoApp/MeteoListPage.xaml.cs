@@ -1,4 +1,5 @@
 ﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Services;
 using MeteoApp.Core.ViewModels;
 using MeteoApp.Resources.Strings;
 
@@ -9,18 +10,27 @@ public partial class MeteoListPage : Shell
     public Dictionary<string, Type> Routes { get; private set; } = new Dictionary<string, Type>();
 
     private MeteoListViewModel _listViewModel;
+    private INotificationProvider _notificationProvider;
 
-    public MeteoListPage(MeteoListViewModel viewModel)
+    public MeteoListPage(MeteoListViewModel viewModel, INotificationProvider notificationProvider)
     {
         InitializeComponent();
         RegisterRoutes();
+
         _listViewModel = viewModel;
+        _notificationProvider = notificationProvider;
+
         BindingContext = _listViewModel;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        if (_notificationProvider != null)
+        {
+            await _notificationProvider.RequestTokenAsync();
+        }
 
         if (_listViewModel != null)
         {
