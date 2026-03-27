@@ -57,7 +57,6 @@ public partial class MeteoListPage : Shell
             {
                 { "Location", location }
             };
-        
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
 
             ((CollectionView)sender).SelectedItem = null;
