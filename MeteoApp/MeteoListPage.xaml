@@ -56,23 +56,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-            <!-- <Button Text="+"
-                    Clicked="OnItemAdded"
-                    BackgroundColor="{StaticResource FabBackgroundColor}"
-                    TextColor="#1C1C23"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    WidthRequest="60"
-                    HeightRequest="60"
-                    CornerRadius="30"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="0,0,20,30">
-                <Button.Shadow>
-                    <Shadow Brush="Black" Offset="0,5" Opacity="0.3" Radius="10" />
-                </Button.Shadow>
-            </Button>-->
         </Grid>
     </ContentPage>
 </Shell>

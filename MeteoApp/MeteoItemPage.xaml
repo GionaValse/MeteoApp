@@ -2,29 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeteoApp.MeteoItemPage"
-             BackgroundColor="#1C1C23">
+             BackgroundColor="#1C1C23"
+             Title="{Binding Location.Name}">
     <ScrollView>
         <VerticalStackLayout Padding="30"
-                             Spacing="20"
-                             VerticalOptions="Center">
-
-            <Label Text="{Binding Location.Name}"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   TextColor="White"
-                   HorizontalOptions="Center"/>
-
-            <Image Source="weather_cloud_3d.png"
-                   HeightRequest="180"
-                   WidthRequest="180"
-                   HorizontalOptions="Center">
-                <Image.Shadow>
-                    <Shadow Brush="Black"
-                            Offset="0,10"
-                            Opacity="0.4"
-                            Radius="15"/>
-                </Image.Shadow>
-            </Image>
+                Spacing="20"
+                VerticalOptions="Center">
 
             <Label Text="{Binding Weather.Description}"
                    FontSize="18"
@@ -44,21 +27,29 @@
                     BackgroundColor="#2C2C36"
                     Padding="20"
                     StrokeThickness="0"
-                    HorizontalOptions="Center"
-                    WidthRequest="200">
-                <VerticalStackLayout Spacing="5"
-                                     HorizontalOptions="Center">
-                    <Label Text="PERCEPITA"
-                           FontSize="12"
+                    HorizontalOptions="Center">
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Label Text="Max"
                            TextColor="#A2A2AD"
                            HorizontalOptions="Center"
                            FontAttributes="Bold"/>
-                    <Label Text="{Binding Weather.FeelsLike, StringFormat='{0:F1} °C'}"
-                           FontSize="22"
+                    <Label Text="{Binding Weather.TemperatureMax, StringFormat='{0:F0} °C'}"
                            TextColor="White"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"/>
-                </VerticalStackLayout>
+                    <Label Text=" | "
+                           TextColor="#A2A2AD"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Label Text="Min"
+                           TextColor="#A2A2AD"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Weather.TemperatureMin, StringFormat='{0:F0} °C'}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
             </Border>
 
         </VerticalStackLayout>
