@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1087103268009",
+    "project_id": "meteoapp-27678",
+    "storage_bucket": "meteoapp-27678.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087103268009:android:12160eb2ab89831062e5b8",
+        "android_client_info": {
+          "package_name": "com.cerval.meteoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9wTdwMSXA2dLAq3cZrnZVXcJhkKdAbNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
