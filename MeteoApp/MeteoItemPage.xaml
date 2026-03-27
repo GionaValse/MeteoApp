@@ -1,12 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MeteoApp.MeteoItemPage">
-        <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*">
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Location.Name}" FontSize="55" HorizontalOptions="Center"/>
-                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.Description}" HorizontalOptions="Center"/>
-                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.Temperature, StringFormat='{0:F1} °C'}" HorizontalOptions="Center"/>
-                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Weather.FeelsLike, StringFormat='{0:F1} °C'}" HorizontalOptions="Center"/>
-        </Grid>
-</ContentPage>
+             x:Class="MeteoApp.MeteoItemPage"
+             BackgroundColor="#1C1C23"
+             Title="{Binding Location.Name}">
+    <ScrollView>
+        <VerticalStackLayout Padding="30"
+                Spacing="20"
+                VerticalOptions="Center">
 
+            <Label Text="{Binding Weather.Description}"
+                   FontSize="18"
+                   TextColor="#A2A2AD"
+                   HorizontalOptions="Center"
+                   TextTransform="Uppercase"
+                   CharacterSpacing="2"/>
+
+            <Label Text="{Binding Weather.Temperature, StringFormat='{0:F0}°'}"
+                   FontSize="110"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   Margin="0,-10,0,-10"/>
+
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#2C2C36"
+                    Padding="20"
+                    StrokeThickness="0"
+                    HorizontalOptions="Center">
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Label Text="Max"
+                           TextColor="#A2A2AD"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Weather.TemperatureMax, StringFormat='{0:F0} °C'}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text=" | "
+                           TextColor="#A2A2AD"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Label Text="Min"
+                           TextColor="#A2A2AD"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Weather.TemperatureMin, StringFormat='{0:F0} °C'}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

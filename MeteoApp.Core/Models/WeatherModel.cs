@@ -9,4 +9,6 @@ public class WeatherModel
     public string Description { get; set; }
     public double Temperature { get; set; }
     public double FeelsLike { get; set; }
+    public double TemperatureMin { get; set; }
+    public double TemperatureMax { get; set; }
 }

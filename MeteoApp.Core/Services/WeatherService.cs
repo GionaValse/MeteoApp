@@ -52,7 +52,9 @@ public class WeatherService : IWeatherService
         {
             Description = apiResponse.Weather.First().Description,
             Temperature = apiResponse.Main.Temperature,
-            FeelsLike = apiResponse.Main.FeelsLike
+            FeelsLike = apiResponse.Main.FeelsLike,
+            TemperatureMin = apiResponse.Main.TemperatureMin,
+            TemperatureMax = apiResponse.Main.TemperatureMax
         };
     }
 
