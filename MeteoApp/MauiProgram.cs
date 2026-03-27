@@ -35,14 +35,15 @@ public static class MauiProgram
         }
 
         // --- REGISTRATION SYSTEM SERVICES (MAUI) ---
+        builder.Services.AddSingleton<IAppConfigProvider, MauiConfigProvider>();
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
         builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
-        builder.Services.AddSingleton<IAppConfigProvider, MauiConfigProvider>();
+        builder.Services.AddSingleton<INotificationProvider, NotificationProvider>();
 
         // --- REGISTRATION CORE SERVICES ---
         builder.Services.AddSingleton<HttpClient>();
-        builder.Services.AddSingleton<IWeatherService, WeatherService>();
         builder.Services.AddSingleton<ILocalDatabase, Database>();
+        builder.Services.AddSingleton<IWeatherService, WeatherService>();
 
         // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();
