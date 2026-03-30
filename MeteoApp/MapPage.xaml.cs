@@ -63,12 +63,18 @@ public partial class MapPage : ContentPage
     private async void OnAddLocationClicked(object sender, EventArgs e)
     {
         var pin = MyMap.Pins.FirstOrDefault();
-        if (pin != null)
+
+        if (pin == null)
+            return;
+
+        try
         {
             await _mapsViewModel.SaveLocationAsync((float)pin.Location.Latitude, (float)pin.Location.Longitude);
-            await DisplayAlertAsync(AppResources.LocalityAdded, AppResources.LocalitySaved, AppResources.ok);
-
             await Shell.Current.GoToAsync("..");
+        }
+        catch (KeyNotFoundException ex)
+        {
+            await DisplayAlertAsync(AppResources.LocationNotFound, AppResources.TryAnotherName, AppResources.ok);
         }
     }
 
