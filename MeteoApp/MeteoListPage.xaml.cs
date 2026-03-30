@@ -1,7 +1,6 @@
 ﻿using MeteoApp.Core.Models;
 using MeteoApp.Core.Services;
 using MeteoApp.Core.ViewModels;
-using MeteoApp.Resources.Strings;
 
 namespace MeteoApp;
 
@@ -23,16 +22,29 @@ public partial class MeteoListPage : Shell
         BindingContext = _listViewModel;
     }
 
-    protected override async void OnAppearing()
+    protected override async void OnNavigated(ShellNavigatedEventArgs args)
     {
-        base.OnAppearing();
-        
-        if (_notificationProvider != null)
-            await _notificationProvider.RequestTokenAsync();
+        base.OnNavigated(args);
+        switch (args.Source)
+        {
+            // Prima apertura / cambio tab principale
+            case ShellNavigationSource.ShellItemChanged:
+            case ShellNavigationSource.ShellSectionChanged:
+            case ShellNavigationSource.ShellContentChanged:
+                await _notificationProvider.RequestTokenAsync();
+                await _listViewModel.LoadAllLocationsAsync();
+                break;
 
-        if (_listViewModel != null)
-            await _listViewModel.LoadAllLocationsAsync();            
+            // Tornato indietro (freccia Android, GoToAsync(".."))
+            case ShellNavigationSource.Pop:
+            case ShellNavigationSource.PopToRoot:
+                await _listViewModel.LoadAllLocationsAsync();
+                break;
 
+            // Navigato in avanti verso un'altra pagina
+            case ShellNavigationSource.Push:
+                break;
+        }
     }
 
     private void RegisterRoutes()
@@ -57,27 +69,6 @@ public partial class MeteoListPage : Shell
             await Shell.Current.GoToAsync("entrydetails", navigationParameter);
 
             ((CollectionView)sender).SelectedItem = null;
-        }
-    }
-
-    private async void OnItemAdded(object sender, EventArgs e)
-    {
-        string cityname = await DisplayPromptAsync(AppResources.AddCity, AppResources.InsertName);
-        
-        if (!string.IsNullOrEmpty(cityname))
-        {
-            try
-            {
-                await ((MeteoListViewModel)BindingContext).InsertLocationAsync(cityname);            
-            }
-            catch (KeyNotFoundException ex)
-            {
-                await DisplayAlertAsync(
-                    AppResources.LocationNotFound, 
-                    AppResources.TryAnotherName, 
-                    AppResources.ok
-                );
-            }
         }
     }
 
