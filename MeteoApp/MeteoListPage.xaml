@@ -24,7 +24,21 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="0,0,0,16">
-                            <SwipeView IsEnabled="{Binding IsNotGpsLocation, Converter={StaticResource InvertedBoolConverter}}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+
+
+                            <SwipeView IsEnabled="{Binding IsNotGpsLocation}">
                                 <SwipeView.RightItems>
                                     <SwipeItems Mode="Reveal">
                                         <SwipeItem Text="Elimina"

@@ -48,9 +48,7 @@ public class MeteoListViewModel : BaseViewModel
 
         var data = _db.GetAllLocations();
         if (data != null)
-        {
             tempStack.AddRange(data);
-        }
 
         Locations = new ObservableCollection<LocationModel>(tempStack);
     }
