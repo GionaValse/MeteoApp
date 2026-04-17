@@ -11,4 +11,5 @@ public interface IWeatherService
     Task<LocationModel?> GetLocationByLatLonAsync(float lat, float lon);
     Task<WeatherModel?> GetWeatherAsync(ILocation location);
     Task<string?> GetNameByPostionAsync(ILocation location);
+    Task<WeatherForecastResponse?> GetForecastDataAsync(ILocation location);
 }

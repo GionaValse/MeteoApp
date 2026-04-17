@@ -69,6 +69,17 @@ public class WeatherService : IWeatherService
         return apiResponse[0].Name;
     }
 
+    public async Task<WeatherForecastResponse?> GetForecastDataAsync(ILocation location)
+    {
+        var url = $"{_apiUrl}/data/2.5/forecast?lat={location.Latitude}&lon={location.Longitude}";
+        var apiResponse = await SendRequestAsync<WeatherForecastResponse>(url);
+
+        if (apiResponse == null) 
+            return null;
+
+        return apiResponse;
+    }
+
     private async Task<T?> SendRequestAsync<T>(string requestUrl)
     {
         string apiKey = _appConfigProvider.GetWeatherApiKey();
