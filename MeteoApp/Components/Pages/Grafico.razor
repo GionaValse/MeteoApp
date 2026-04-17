@@ -1,0 +1,32 @@
+@page "/grafico"
+@inject IJSRuntime JS
+@inject ParameterService parameterService
+
+<p style="text-align:center;">Grafico temperatura della giornata</p>
+<div style="display:flex; justify-content:center;">
+    <canvas id="@ChartId" style="width:100%; max-width:600px; height:300px;"></canvas>
+</div>
+
+<p id="stupid-error" style="text-align:center;"></p>
+
+@code {
+    private List<double> Temperatures = new();
+    private List<string> Labels = new();
+    private string ChartId = "chart";
+    private bool _chartCreated;
+
+    protected override void OnInitialized()
+    {
+        Temperatures = parameterService.Temperatures ?? new();
+        Labels = parameterService.Labels ?? new();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_chartCreated)
+        {
+            _chartCreated = true;
+            await JS.InvokeVoidAsync("createChart", ChartId, Temperatures, Labels);
+        }
+    }
+}
