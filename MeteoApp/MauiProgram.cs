@@ -54,6 +54,10 @@ public static class MauiProgram
         builder.Services.AddTransient<MeteoItemPage>();
         builder.Services.AddTransient<MapPage>();
 
+        // -- REGISTRATION BLAZZOR --
+        builder.Services.AddSingleton<ParameterService>();
+        builder.Services.AddMauiBlazorWebView();
+
         return builder.Build();
 	}
 }
