@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeteoApp.Views.HomePage"
              xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
-             Title="HomePage">
+             Title="HomePage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static res:AppResources.map}" Clicked="GoToMap" />
@@ -11,9 +12,9 @@
 
     <Grid>
         <CollectionView x:Name="zlistView" Margin="20,20,20,0"
-                ItemsSource="{Binding Locations}"
-                SelectionMode="Single"
-                SelectionChanged="OnListItemSelected">
+                        ItemsSource="{Binding Locations}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnListItemSelected">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="0,0,0,16">
@@ -30,21 +31,20 @@
                             </VisualStateGroupList>
                         </VisualStateManager.VisualStateGroups>
 
-
                         <SwipeView IsEnabled="{Binding IsNotGpsLocation}">
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Elimina"
-                                       BackgroundColor="{StaticResource DeleteColor}"
-                                       IconImageSource="delete.png"
-                                       Invoked="OnDeleteSwipeItemInvoked" />
+                                               BackgroundColor="{StaticResource Error}"
+                                               IconImageSource="delete.png"
+                                               Invoked="OnDeleteSwipeItemInvoked" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
                             <Border StrokeShape="RoundRectangle 16"
-                            BackgroundColor="{StaticResource CardBackgroundColor}"
-                            StrokeThickness="0"
-                            Padding="20">
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}"
+                                    StrokeThickness="0"
+                                    Padding="20">
 
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroupList>
@@ -52,7 +52,7 @@
                                             <VisualState x:Name="Normal" />
                                             <VisualState x:Name="Selected">
                                                 <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#3D3D4D" />
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
                                                 </VisualState.Setters>
                                             </VisualState>
                                         </VisualStateGroup>
@@ -61,17 +61,17 @@
 
                                 <Grid ColumnDefinitions="*, Auto">
                                     <Label Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="18"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center" />
+                                           Text="{Binding Name}"
+                                           TextColor="{AppThemeBinding Light={StaticResource OnSurfaceLight}, Dark={StaticResource OnSurfaceDark}}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center" />
 
                                     <Image Grid.Column="1"
-                                   Source="check.png"
-                                   HeightRequest="20"
-                                   IsVisible="{Binding Done}"
-                                   VerticalOptions="Center"/>
+                                           Source="check.png"
+                                           HeightRequest="20"
+                                           IsVisible="{Binding Done}"
+                                           VerticalOptions="Center"/>
                                 </Grid>
                             </Border>
                         </SwipeView>

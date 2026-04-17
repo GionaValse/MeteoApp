@@ -40,6 +40,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
         builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
         builder.Services.AddSingleton<INotificationProvider, NotificationProvider>();
+        builder.Services.AddSingleton<IPreferencesService, PreferencesService>();
 
         // --- REGISTRATION CORE SERVICES ---
         builder.Services.AddSingleton<HttpClient>();
@@ -50,6 +51,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MeteoListViewModel>();
         builder.Services.AddTransient<MeteoViewModel>();
         builder.Services.AddTransient<MapsViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
 
         builder.Services.AddTransient<AppShell>();
         builder.Services.AddTransient<HomePage>();

@@ -1,23 +1,22 @@
 ﻿<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
-       x:Class="MeteoApp.AppShell"
        xmlns:local="clr-namespace:MeteoApp.Views"
+       x:Class="MeteoApp.AppShell"
        Shell.FlyoutBehavior="Disabled">
-
     <TabBar>
         <Tab Title="Home" Icon="home.png">
             <ShellContent 
-            Title="Home"
-            Route="HomePage" 
-            ContentTemplate="{DataTemplate local:HomePage}" />
+                Title="Home"
+                Route="HomePage" 
+                ContentTemplate="{DataTemplate local:HomePage}" />
         </Tab>
 
         <Tab Title="Impostazioni" Icon="settings.png">
             <ShellContent 
-            Title="Impostazioni"
-            Route="SettingsPage" 
-            ContentTemplate="{DataTemplate local:SettingsPage}" />
+                Title="Impostazioni"
+                Route="SettingsPage" 
+                ContentTemplate="{DataTemplate local:SettingsPage}" />
         </Tab>
     </TabBar>
 </Shell>
