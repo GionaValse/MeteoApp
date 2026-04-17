@@ -1,20 +1,17 @@
-﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Models;
 using MeteoApp.Core.Services;
 using MeteoApp.Core.ViewModels;
 
-namespace MeteoApp;
+namespace MeteoApp.Views;
 
-public partial class MeteoListPage : Shell
+public partial class HomePage : ContentPage
 {
-    public Dictionary<string, Type> Routes { get; private set; } = new Dictionary<string, Type>();
-
     private MeteoListViewModel _listViewModel;
     private INotificationProvider _notificationProvider;
 
-    public MeteoListPage(MeteoListViewModel viewModel, INotificationProvider notificationProvider)
+    public HomePage(MeteoListViewModel viewModel, INotificationProvider notificationProvider)
     {
         InitializeComponent();
-        RegisterRoutes();
 
         _listViewModel = viewModel;
         _notificationProvider = notificationProvider;
@@ -22,38 +19,10 @@ public partial class MeteoListPage : Shell
         BindingContext = _listViewModel;
     }
 
-    protected override async void OnNavigated(ShellNavigatedEventArgs args)
+    protected override async void OnAppearing()
     {
-        base.OnNavigated(args);
-        switch (args.Source)
-        {
-            // Prima apertura / cambio tab principale
-            case ShellNavigationSource.ShellItemChanged:
-            case ShellNavigationSource.ShellSectionChanged:
-            case ShellNavigationSource.ShellContentChanged:
-                await _notificationProvider.RequestTokenAsync();
-                await _listViewModel.LoadAllLocationsAsync();
-                break;
-
-            // Tornato indietro (freccia Android, GoToAsync(".."))
-            case ShellNavigationSource.Pop:
-            case ShellNavigationSource.PopToRoot:
-                await _listViewModel.LoadAllLocationsAsync();
-                break;
-
-            // Navigato in avanti verso un'altra pagina
-            case ShellNavigationSource.Push:
-                break;
-        }
-    }
-
-    private void RegisterRoutes()
-    {
-        Routes.Add("entrydetails", typeof(MeteoItemPage));
-        Routes.Add("maps", typeof(MapPage));
-
-        foreach (var item in Routes)
-            Routing.RegisterRoute(item.Key, item.Value);
+        base.OnAppearing();
+        await _listViewModel.LoadAllLocationsAsync();
     }
 
     private async void OnListItemSelected(object sender, SelectionChangedEventArgs e)

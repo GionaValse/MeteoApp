@@ -4,7 +4,7 @@ namespace MeteoApp;
 
 public partial class App : Application
 {
-    public App(MeteoListPage mainPage)
+    public App(AppShell mainPage)
 	{
 		InitializeComponent();
 

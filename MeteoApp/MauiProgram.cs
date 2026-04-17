@@ -2,6 +2,7 @@
 using MeteoApp.Core.ViewModels;
 using MeteoApp.Services;
 using MeteoApp.ViewModels;
+using MeteoApp.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -50,7 +51,9 @@ public static class MauiProgram
         builder.Services.AddTransient<MeteoViewModel>();
         builder.Services.AddTransient<MapsViewModel>();
 
-        builder.Services.AddTransient<MeteoListPage>();
+        builder.Services.AddTransient<AppShell>();
+        builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MeteoItemPage>();
         builder.Services.AddTransient<MapPage>();
 
