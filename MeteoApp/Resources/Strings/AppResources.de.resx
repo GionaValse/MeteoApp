@@ -127,7 +127,7 @@
     <value>Entdecken Sie Standorte</value>
   </data>
   <data name="InsertName" xml:space="preserve">
-    <value>Inserisci il nome:</value>
+    <value>Namen eingeben:</value>
   </data>
   <data name="LocalityAdded" xml:space="preserve">
     <value>Standort hinzugefügt</value>
@@ -152,5 +152,41 @@
   </data>
   <data name="UnknownPoint" xml:space="preserve">
     <value>Punkt unbekannt</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="settings_title" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="app_theme" xml:space="preserve">
+    <value>App-Design</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="general_settings" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="app_language" xml:space="preserve">
+    <value>App-Sprache</value>
+  </data>
+  <data name="receive_weather_alerts" xml:space="preserve">
+    <value>Wetterwarnungen erhalten</value>
+  </data>
+  <data name="data_sync" xml:space="preserve">
+    <value>Datensynchronisation</value>
+  </data>
+  <data name="last_update" xml:space="preserve">
+    <value>Letztes Update:</value>
+  </data>
+  <data name="sync_now" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
   </data>
 </root>

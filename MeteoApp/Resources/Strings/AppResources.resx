@@ -153,4 +153,40 @@
   <data name="UnknownPoint" xml:space="preserve">
     <value>Unknown point</value>
   </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="settings_title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="app_theme" xml:space="preserve">
+    <value>App theme</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="general_settings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="app_language" xml:space="preserve">
+    <value>App language</value>
+  </data>
+  <data name="receive_weather_alerts" xml:space="preserve">
+    <value>Receive weather alerts</value>
+  </data>
+  <data name="data_sync" xml:space="preserve">
+    <value>Data Synchronization</value>
+  </data>
+  <data name="last_update" xml:space="preserve">
+    <value>Last update:</value>
+  </data>
+  <data name="sync_now" xml:space="preserve">
+    <value>Sync Now</value>
+  </data>
 </root>

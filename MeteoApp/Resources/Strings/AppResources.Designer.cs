@@ -79,6 +79,42 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a App language.
+        /// </summary>
+        public static string app_language {
+            get {
+                return ResourceManager.GetString("app_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a App theme.
+        /// </summary>
+        public static string app_theme {
+            get {
+                return ResourceManager.GetString("app_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Data Synchronization.
+        /// </summary>
+        public static string data_sync {
+            get {
+                return ResourceManager.GetString("data_sync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Delete.
+        /// </summary>
+        public static string delete {
+            get {
+                return ResourceManager.GetString("delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Explore locations.
         /// </summary>
         public static string ExploreLocation {
@@ -88,11 +124,29 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a General.
+        /// </summary>
+        public static string general_settings {
+            get {
+                return ResourceManager.GetString("general_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Insert the name:.
         /// </summary>
         public static string InsertName {
             get {
                 return ResourceManager.GetString("InsertName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Last update:.
+        /// </summary>
+        public static string last_update {
+            get {
+                return ResourceManager.GetString("last_update", resourceCulture);
             }
         }
         
@@ -142,11 +196,65 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Receive weather alerts.
+        /// </summary>
+        public static string receive_weather_alerts {
+            get {
+                return ResourceManager.GetString("receive_weather_alerts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Search a city....
         /// </summary>
         public static string SearchCity {
             get {
                 return ResourceManager.GetString("SearchCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Settings.
+        /// </summary>
+        public static string settings_title {
+            get {
+                return ResourceManager.GetString("settings_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Sync Now.
+        /// </summary>
+        public static string sync_now {
+            get {
+                return ResourceManager.GetString("sync_now", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Dark.
+        /// </summary>
+        public static string theme_dark {
+            get {
+                return ResourceManager.GetString("theme_dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Light.
+        /// </summary>
+        public static string theme_light {
+            get {
+                return ResourceManager.GetString("theme_light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a System.
+        /// </summary>
+        public static string theme_system {
+            get {
+                return ResourceManager.GetString("theme_system", resourceCulture);
             }
         }
         
