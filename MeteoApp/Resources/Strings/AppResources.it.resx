@@ -148,9 +148,45 @@
     <value>Cerca una città...</value>
   </data>
   <data name="TryAnotherName" xml:space="preserve">
-    <value>Riprova a con un altro nome</value>
+    <value>Riprova con un altro nome</value>
   </data>
   <data name="UnknownPoint" xml:space="preserve">
-    <value>Punto sconosiuto</value>
+    <value>Punto sconosciuto</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="settings_title" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="app_theme" xml:space="preserve">
+    <value>Tema dell'app</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>Chiaro</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>Scuro</value>
+  </data>
+  <data name="general_settings" xml:space="preserve">
+    <value>Generali</value>
+  </data>
+  <data name="app_language" xml:space="preserve">
+    <value>Lingua dell'app</value>
+  </data>
+  <data name="receive_weather_alerts" xml:space="preserve">
+    <value>Ricevi avvisi meteo</value>
+  </data>
+  <data name="data_sync" xml:space="preserve">
+    <value>Sincronizzazione Dati</value>
+  </data>
+  <data name="last_update" xml:space="preserve">
+    <value>Ultimo aggiornamento:</value>
+  </data>
+  <data name="sync_now" xml:space="preserve">
+    <value>Sincronizza Ora</value>
   </data>
 </root>

@@ -46,6 +46,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<ILocalDatabase, Database>();
         builder.Services.AddSingleton<IWeatherService, WeatherService>();
+        builder.Services.AddSingleton<IThemeService, ThemeService>();
+        builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
 
         // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();

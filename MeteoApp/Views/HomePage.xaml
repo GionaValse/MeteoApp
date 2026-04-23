@@ -34,7 +34,7 @@
                         <SwipeView IsEnabled="{Binding IsNotGpsLocation}">
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Reveal">
-                                    <SwipeItem Text="Elimina"
+                                    <SwipeItem Text="{x:Static res:AppResources.delete}"
                                                BackgroundColor="{StaticResource Error}"
                                                IconImageSource="delete.png"
                                                Invoked="OnDeleteSwipeItemInvoked" />

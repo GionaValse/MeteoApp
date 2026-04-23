@@ -1,8 +1,8 @@
 ﻿<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
        xmlns:local="clr-namespace:MeteoApp.Views"
        x:Class="MeteoApp.AppShell"
+       xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
        Shell.FlyoutBehavior="Disabled">
     <TabBar>
         <Tab Title="Home" Icon="home.png">
@@ -12,9 +12,9 @@
                 ContentTemplate="{DataTemplate local:HomePage}" />
         </Tab>
 
-        <Tab Title="Impostazioni" Icon="settings.png">
+        <Tab Title="{x:Static res:AppResources.settings_title}" Icon="settings.png">
             <ShellContent 
-                Title="Impostazioni"
+                Title="{x:Static res:AppResources.settings_title}"
                 Route="SettingsPage" 
                 ContentTemplate="{DataTemplate local:SettingsPage}" />
         </Tab>

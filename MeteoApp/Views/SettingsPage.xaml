@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MeteoApp.Views.SettingsPage"
-             Title="Impostazioni">
+             xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+             Title="{x:Static res:AppResources.settings_title}">
 
     <ScrollView Margin="20">
         <VerticalStackLayout Spacing="20">
@@ -10,10 +11,20 @@
             <Border Style="{StaticResource WeatherCardStyle}">
                 <VerticalStackLayout Spacing="15">
 
-                    <Label Text="Generali" FontAttributes="Bold" FontSize="18" />
+                    <Label Text="{x:Static res:AppResources.general_settings}" FontAttributes="Bold" FontSize="18" />
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
 
                     <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
-                        <Label Text="Lingua dell'app" VerticalOptions="Center" />
+                        <Label Text="{x:Static res:AppResources.app_theme}" VerticalOptions="Center" />
+                        <Picker x:Name="ThemePicker"
+                                Grid.Column="1" 
+                                WidthRequest="130"
+                                SelectedIndex="{Binding SelectedThemeIndex}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                        <Label Text="{x:Static res:AppResources.app_language}" VerticalOptions="Center" />
 
                         <Picker Grid.Column="1" 
                                 WidthRequest="130"
@@ -21,7 +32,7 @@
                             <Picker.Items>
                                 <x:String>Italiano</x:String>
                                 <x:String>English</x:String>
-                                <x:String>Français</x:String>
+                                <x:String>Deutsch</x:String>
                             </Picker.Items>
                         </Picker>
                     </Grid>
@@ -29,7 +40,7 @@
                     <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
 
                     <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
-                        <Label Text="Ricevi avvisi meteo" VerticalOptions="Center" />
+                        <Label Text="{x:Static res:AppResources.receive_weather_alerts}" VerticalOptions="Center" />
                         <Switch Grid.Column="1" 
                                 IsToggled="{Binding NotificationsEnabled}" 
                                 OnColor="{StaticResource Primary}" />
@@ -40,18 +51,18 @@
 
             <Border Style="{StaticResource WeatherCardStyle}">
                 <VerticalStackLayout Spacing="15">
-                    <Label Text="Sincronizzazione Dati" FontAttributes="Bold" FontSize="18" />
+                    <Label Text="{x:Static res:AppResources.data_sync}" FontAttributes="Bold" FontSize="18" />
 
                     <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
-                        <Label Text="Ultimo aggiornamento:" VerticalOptions="Center" />
+                        <Label Text="{x:Static res:AppResources.last_update}" VerticalOptions="Center" />
 
                         <Label Grid.Column="1" 
-                               Text="{Binding LastSync, StringFormat='{0:dd/MM/yyyy HH:mm}'}" 
+                               Text="{Binding LastSync, StringFormat='{0:g}'}"
                                TextColor="{StaticResource Gray500}" 
                                VerticalOptions="Center" />
                     </Grid>
 
-                    <Button Text="Sincronizza Ora" 
+                    <Button Text="{x:Static res:AppResources.sync_now}" 
                             Command="{Binding SyncCommand}" 
                             Margin="0,10,0,0" />
                 </VerticalStackLayout>

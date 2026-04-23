@@ -9,4 +9,5 @@ public class UserPreferences
     public required string Language { get; set; }
     public bool NotificationsEnabled { get; set; }
     public DateTime LastSync { get; set; }
+    public int Theme { get; set; }
 }

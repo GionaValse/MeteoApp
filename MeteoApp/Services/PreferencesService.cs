@@ -11,8 +11,8 @@ public class PreferencesService : IPreferencesService
         {
             Language = Preferences.Default.Get("App_Language", "Italiano"),
             NotificationsEnabled = Preferences.Default.Get("App_Notifications", false),
-
-            LastSync = new DateTime(Preferences.Default.Get("App_LastSync", DateTime.MinValue.Ticks))
+            LastSync = new DateTime(Preferences.Default.Get("App_LastSync", DateTime.MinValue.Ticks)),
+            Theme = Preferences.Default.Get("App_Theme", 0)
         };
     }
 
@@ -21,5 +21,6 @@ public class PreferencesService : IPreferencesService
         Preferences.Default.Set("App_Language", preferences.Language);
         Preferences.Default.Set("App_Notifications", preferences.NotificationsEnabled);
         Preferences.Default.Set("App_LastSync", preferences.LastSync.Ticks);
+        Preferences.Default.Set("App_Theme", preferences.Theme);
     }
 }
