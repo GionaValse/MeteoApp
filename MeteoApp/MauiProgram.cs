@@ -1,4 +1,5 @@
-﻿using MeteoApp.Core.Services;
+﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Services;
 using MeteoApp.Core.ViewModels;
 using MeteoApp.Services;
 using MeteoApp.ViewModels;
@@ -44,10 +45,12 @@ public static class MauiProgram
 
         // --- REGISTRATION CORE SERVICES ---
         builder.Services.AddSingleton<HttpClient>();
-        builder.Services.AddSingleton<ILocalDatabase, Database>();
+        builder.Services.AddSingleton<ILocalDatabase<LocationModel>, Database>();
+        builder.Services.AddSingleton<IRemoteDatabase<LocationModel>, AppWriteDatabse>();
         builder.Services.AddSingleton<IWeatherService, WeatherService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
+        builder.Services.AddSingleton<ISyncService<LocationModel>, AppWriteSyncService>();
 
         // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();
