@@ -21,8 +21,8 @@ public class DatabaseTests
         var location = new LocationModel { Id = 1, Name = "Bari", Latitude = 41.1171, Longitude = 16.8719 };
 
         // Act
-        int rowsAffected = db.SaveLocation(location);
-        var allLocations = db.GetAllLocations();
+        int rowsAffected = db.SaveAsync(location);
+        var allLocations = db.GetDataAsync();
 
         // Assert
         Assert.Equal(1, rowsAffected);
@@ -35,12 +35,12 @@ public class DatabaseTests
     {
         // Arrange
         var db = GetInMemoryDatabase();
-        db.SaveLocation(new LocationModel { Name = "Roma" });
-        db.SaveLocation(new LocationModel { Name = "Milano" });
-        db.SaveLocation(new LocationModel { Name = "Palermo" });
+        db.SaveAsync(new LocationModel { Name = "Roma" });
+        db.SaveAsync(new LocationModel { Name = "Milano" });
+        db.SaveAsync(new LocationModel { Name = "Palermo" });
 
         // Act
-        var result = db.GetAllLocations();
+        var result = db.GetDataAsync();
 
         // Assert
         Assert.Equal(3, result.Count);
@@ -57,12 +57,12 @@ public class DatabaseTests
         var locationToKeep = new LocationModel { Id = 1, Name = "Torino" };
         var locationToDelete = new LocationModel { Id = 2, Name = "Venezia" };
 
-        db.SaveLocation(locationToKeep);
-        db.SaveLocation(locationToDelete);
+        db.SaveAsync(locationToKeep);
+        db.SaveAsync(locationToDelete);
 
         // Act
-        int rowsAffected = db.DeleteLocation(locationToDelete);
-        var allLocations = db.GetAllLocations();
+        int rowsAffected = db.DeleteAsync(locationToDelete);
+        var allLocations = db.GetDataAsync();
 
         // Assert
         Assert.Equal(1, rowsAffected);

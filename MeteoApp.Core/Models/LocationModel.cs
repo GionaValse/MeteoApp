@@ -1,13 +1,12 @@
-﻿
-using SQLite;
+﻿using SQLite;
 using System.Text.Json.Serialization;
 
 namespace MeteoApp.Core.Models;
 
-public class LocationModel : ILocation
+public class LocationModel : ILocation, ISyncableEntity
 {
-    [PrimaryKey, AutoIncrement]
-    public int Id { get; set; }
+    [PrimaryKey]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [JsonPropertyName("name")]
     public string Name { get; set; }
@@ -20,4 +19,10 @@ public class LocationModel : ILocation
 
     [JsonIgnore]
     public bool IsNotGpsLocation { get; set; }
+
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsDeleted { get; set; } = false;
+
+    public bool NeedsSync { get; set; } = true;
 }

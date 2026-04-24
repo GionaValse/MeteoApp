@@ -3,51 +3,61 @@ using SQLite;
 
 namespace MeteoApp.Core.Services;
 
-public class Database : ILocalDatabase
+public class Database : ILocalDatabase<LocationModel>
 {
     private static class Constants
     {
         public const string DatabaseFilename = "MeteoQlie.db";
 
         public const SQLite.SQLiteOpenFlags Flags =
-            // open the database in read/write mode
             SQLite.SQLiteOpenFlags.ReadWrite |
-            // create the database if it doesn't exist
             SQLite.SQLiteOpenFlags.Create |
-            // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
     }
 
-
-    private readonly SQLiteConnection _db;
+    private readonly SQLiteAsyncConnection _db;
 
     public Database()
     {
         string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.DatabaseFilename);
-        _db = new SQLiteConnection(dbPath, Constants.Flags);
-        _db.CreateTable<LocationModel>();
+
+        _db = new SQLiteAsyncConnection(dbPath, Constants.Flags);
+        _db.CreateTableAsync<LocationModel>().Wait();
     }
 
     public Database(string dbPath)
     {
-        _db = new SQLiteConnection(dbPath, Constants.Flags);
-        _db.CreateTable<LocationModel>();
+        _db = new SQLiteAsyncConnection(dbPath, Constants.Flags);
+        _db.CreateTableAsync<LocationModel>().Wait();
     }
 
-    public List<LocationModel> GetAllLocations()
+    public async Task<IEnumerable<LocationModel>> GetDataAsync()
     {
-        var locations = _db.Table<LocationModel>().ToList();
+        var locations = await _db.Table<LocationModel>()
+                                 .Where(l => !l.IsDeleted)
+                                 .ToListAsync();
+
         locations.ForEach(l => l.IsNotGpsLocation = true);
+
         return locations;
     }
 
-    public int SaveLocation(LocationModel location)
+    public async Task SaveAsync(LocationModel location)
     {
-        return _db.Insert(location);
+        await _db.InsertOrReplaceAsync(location);
     }
 
-    public int DeleteLocation(LocationModel location)
+    public async Task DeleteAsync(LocationModel location)
     {
-        return  _db.Delete(location);
+        location.IsDeleted = true;
+        location.NeedsSync = true;
+        location.UpdatedAt = DateTime.UtcNow;
+
+        await _db.UpdateAsync(location);
+    }
+
+    public async Task<IEnumerable<LocationModel>> GetRecordsNeedingSyncAsync()
+    {
+        return await _db.Table<LocationModel>().Where(l => l.NeedsSync).ToListAsync();
     }
 }

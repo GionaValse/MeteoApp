@@ -7,7 +7,7 @@ namespace MeteoApp.Core.ViewModels;
 public class MeteoListViewModel : BaseViewModel
 {
     private readonly ILocationProvider _locationProvider;
-    private readonly ILocalDatabase _db;
+    private readonly ILocalDatabase<LocationModel> _db;
     private readonly IWeatherService _weatherService;
 
     private ObservableCollection<LocationModel> _locations;
@@ -24,7 +24,7 @@ public class MeteoListViewModel : BaseViewModel
     public MeteoListViewModel(
         ILocationProvider locationProvider,
         IWeatherService weatherService,
-        ILocalDatabase database)
+        ILocalDatabase<LocationModel> database)
     {
         _locationProvider = locationProvider;
         _weatherService = weatherService;
@@ -46,7 +46,7 @@ public class MeteoListViewModel : BaseViewModel
             tempStack.Add(currentLoc);
         }
 
-        var data = _db.GetAllLocations();
+        var data = await _db.GetDataAsync();
         if (data != null)
             tempStack.AddRange(data);
 
@@ -61,7 +61,7 @@ public class MeteoListViewModel : BaseViewModel
         if (location == null)
             throw new KeyNotFoundException();
         
-        _db.SaveLocation(location);
+        await _db.SaveAsync(location);
         Locations.Add(location);
     }
 
@@ -69,7 +69,7 @@ public class MeteoListViewModel : BaseViewModel
     {
         if (location == null)
             return;
-        _db.DeleteLocation(location);
+        await _db.DeleteAsync(location);
         Locations.Remove(location);
     }
 }
