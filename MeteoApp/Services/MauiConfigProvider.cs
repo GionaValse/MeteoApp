@@ -15,6 +15,21 @@ public class MauiConfigProvider : IAppConfigProvider
         _configuration = configuration;
     }
 
+    public string GetAppwriteApiKey()
+    {
+        return _configuration["AppwriteApiKey"];
+    }
+
+    public string GetAppwriteEndpoint()
+    {
+        return _configuration["AppwriteEndpoint"];
+    }
+
+    public string GetAppwriteProjectId()
+    {
+        return _configuration["AppwriteProjectId"];
+    }
+
     public string GetWeatherApiKey()
     {
         return _configuration["MeteoApiKey"];

@@ -1,4 +1,5 @@
-﻿using MeteoApp.Core.Models;
+﻿using Appwrite;
+using MeteoApp.Core.Models;
 using MeteoApp.Core.Services;
 using MeteoApp.Core.ViewModels;
 using MeteoApp.Services;
@@ -46,11 +47,11 @@ public static class MauiProgram
         // --- REGISTRATION CORE SERVICES ---
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<ILocalDatabase<LocationModel>, Database>();
-        builder.Services.AddSingleton<IRemoteDatabase<LocationModel>, AppWriteDatabse>();
+        builder.Services.AddSingleton<IRemoteDatabase<LocationModel>, LocationRemoteDatabase>();
         builder.Services.AddSingleton<IWeatherService, WeatherService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
-        builder.Services.AddSingleton<ISyncService<LocationModel>, AppWriteSyncService>();
+        builder.Services.AddSingleton<ISyncService<LocationModel>, AppwriteSyncService>();
 
         // --- REGISTRATION VIEWMODELS & PAGES ---
         builder.Services.AddTransient<MeteoListViewModel>();
@@ -67,6 +68,9 @@ public static class MauiProgram
         // -- REGISTRATION BLAZZOR --
         builder.Services.AddSingleton<ParameterService>();
         builder.Services.AddMauiBlazorWebView();
+
+        // -- REGISTRATION APPWRITE --
+        builder.Services.AddSingleton<AppwriteDatabse>();
 
         return builder.Build();
 	}
