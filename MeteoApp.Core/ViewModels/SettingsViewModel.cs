@@ -14,23 +14,27 @@ public class SettingsViewModel : BaseViewModel
     private readonly IThemeService _themeService;
     private readonly ILocalizationService _localizationService;
     private readonly INotificationProvider _notificationProvider;
+    private readonly ISyncService<LocationModel> _syncService;
 
     private string _language;
     private bool _notificationsEnabled;
     private DateTime _lastSync;
     private int _selectedThemeIndex;
+    private int _selectedSyncStrategyIndex;
 
     public SettingsViewModel(
         IPreferencesService preferencesService, 
         IThemeService themeService,
         ILocalizationService localizationService,
-        INotificationProvider notificationProvider
+        INotificationProvider notificationProvider,
+        ISyncService<LocationModel> syncService
         )
     {
         _preferencesService = preferencesService;
         _themeService = themeService;
         _localizationService = localizationService;
         _notificationProvider = notificationProvider;
+        _syncService = syncService;
 
         var prefs = _preferencesService.GetPreferences();
 
@@ -38,9 +42,10 @@ public class SettingsViewModel : BaseViewModel
         _notificationsEnabled = prefs.NotificationsEnabled;
         _lastSync = prefs.LastSync;
         _selectedThemeIndex = prefs.Theme;
+        _selectedSyncStrategyIndex = prefs.SyncStrategy;
 
         _themeService.SetTheme(_selectedThemeIndex);
-        SyncCommand = new RelayCommand(ExecuteSync);
+        SyncCommand = new RelayCommand(async () => await ExecuteSync());
     }
 
     public string Language
@@ -123,12 +128,25 @@ public class SettingsViewModel : BaseViewModel
         }
     }
 
+    public int SelectedSyncStrategyIndex
+    {
+        get => _selectedSyncStrategyIndex;
+        set
+        {
+            if (_selectedSyncStrategyIndex != value)
+            {
+                _selectedSyncStrategyIndex = value;
+                OnPropertyChanged();
+                SaveSettings();
+            }
+        }
+    }
+
     public ICommand SyncCommand { get; protected set; }
 
-    private void ExecuteSync()
+    private async Task ExecuteSync()
     {
-        LastSync = DateTime.Now;
-        SaveSettings();
+        await _syncService.SynchronizeAsync();
     }
 
     private void SaveSettings()
@@ -138,7 +156,8 @@ public class SettingsViewModel : BaseViewModel
             Language = this.Language,
             NotificationsEnabled = this.NotificationsEnabled,
             LastSync = this.LastSync,
-            Theme = this.SelectedThemeIndex
+            Theme = this.SelectedThemeIndex,
+            SyncStrategy = this.SelectedSyncStrategyIndex
         };
 
         _preferencesService.SavePreferences(prefs);

@@ -6,10 +6,7 @@ using System.Text;
 
 namespace MeteoApp.Core.Services;
 
-public interface ILocalDatabase<T> where T : ISyncableEntity
+public interface ISyncableLocalDatabase<T> : IDatabase<T> where T : ISyncableEntity
 {
-    Task<IEnumerable<T>> GetDataAsync();
-    Task SaveAsync(T location);
-    Task DeleteAsync(T location);
     Task<IEnumerable<T>> GetRecordsNeedingSyncAsync();
 }

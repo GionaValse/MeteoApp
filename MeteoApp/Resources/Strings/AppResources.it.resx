@@ -189,4 +189,13 @@
   <data name="sync_now" xml:space="preserve">
     <value>Sincronizza Ora</value>
   </data>
+  <data name="sync_strategy_latest" xml:space="preserve">
+    <value>Ultima Modifica</value>
+  </data>
+  <data name="sync_strategy_local" xml:space="preserve">
+    <value>Vince Locale</value>
+  </data>
+  <data name="sync_strategy_remote" xml:space="preserve">
+    <value>Vince Remoto</value>
+  </data>
 </root>

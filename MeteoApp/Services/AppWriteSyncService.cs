@@ -8,12 +8,12 @@ namespace MeteoApp.Services;
 
 public class AppwriteSyncService : ISyncService<LocationModel>
 {
-    private readonly ILocalDatabase<LocationModel> _localDatabase;
-    private readonly IRemoteDatabase<LocationModel> _remoteDatabase;
+    private readonly ISyncableLocalDatabase<LocationModel> _localDatabase;
+    private readonly ISyncableRemoteDatabase<LocationModel> _remoteDatabase;
 
     public AppwriteSyncService(
-        ILocalDatabase<LocationModel> localDatabase, 
-        IRemoteDatabase<LocationModel> remoteDatabase)
+        ISyncableLocalDatabase<LocationModel> localDatabase, 
+        ISyncableRemoteDatabase<LocationModel> remoteDatabase)
     {
         _localDatabase = localDatabase;
         _remoteDatabase = remoteDatabase;
@@ -21,16 +21,16 @@ public class AppwriteSyncService : ISyncService<LocationModel>
 
     public async Task DeleteAsync(LocationModel entity)
     {
-        await _localDatabase.DeleteAsync(entity);
+        await _localDatabase.PushDeleteAsync(entity);
 
         try
         {
             await _remoteDatabase.PushDeleteAsync(entity);
-            await _localDatabase.DeleteAsync(entity);
+            await _localDatabase.PushDeleteAsync(entity);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.WriteLine("Sync failed, will retry later.");
+            Console.WriteLine($"[MeteoAppSync] Delete: Sync failed, will retry later: {ex.Message}");
         }
     }
 
@@ -62,23 +62,24 @@ public class AppwriteSyncService : ISyncService<LocationModel>
         entity.NeedsSync = true;
         entity.UpdatedAt = DateTime.UtcNow;
 
-        await _localDatabase.SaveAsync(entity);
+        await _localDatabase.PushUpsertAsync(entity);
 
         try
         {
             await _remoteDatabase.PushUpsertAsync(entity);
 
             entity.NeedsSync = false;
-            await _localDatabase.SaveAsync(entity);
+            await _localDatabase.PushUpsertAsync(entity);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.WriteLine("Sync failed, will retry later.");
+            Console.WriteLine($"[MeteoAppSync] Upsert: Sync failed, will retry later: {ex.Message}");
         }
     }
 
     private async Task SynchronizeLocalWinsAsync()
     {
+        Console.WriteLine("[MeteoAppSync] LocalWins sync...");
         var pendingUploads = await _localDatabase.GetRecordsNeedingSyncAsync();
 
         foreach (var item in pendingUploads)
@@ -88,13 +89,13 @@ public class AppwriteSyncService : ISyncService<LocationModel>
                 if (item.IsDeleted)
                 {
                     await _remoteDatabase.PushDeleteAsync(item);
-                    await _localDatabase.DeleteAsync(item);
+                    await _localDatabase.PushDeleteAsync(item);
                 }
                 else
                 {
                     await _remoteDatabase.PushUpsertAsync(item);
                     item.NeedsSync = false;
-                    await _localDatabase.SaveAsync(item);
+                    await _localDatabase.PushUpsertAsync(item);
                 }
             }
             catch
@@ -103,7 +104,8 @@ public class AppwriteSyncService : ISyncService<LocationModel>
             }
         }
 
-        DateTime lastSyncDate = Preferences.Default.Get("App_LastSync", DateTime.MinValue);
+        DateTime safeDefaultDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime lastSyncDate = Preferences.Default.Get("App_LastSync", safeDefaultDate);
 
         try
         {
@@ -122,11 +124,11 @@ public class AppwriteSyncService : ISyncService<LocationModel>
                     cloudItem.NeedsSync = false;
                     if (cloudItem.IsDeleted)
                     {
-                        await _localDatabase.DeleteAsync(cloudItem);
+                        await _localDatabase.PushDeleteAsync(cloudItem);
                     }
                     else
                     {
-                        await _localDatabase.SaveAsync(cloudItem);
+                        await _localDatabase.PushUpsertAsync(cloudItem);
                     }
                 }
             }
@@ -135,12 +137,13 @@ public class AppwriteSyncService : ISyncService<LocationModel>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Errore in fase di download sync: {ex.Message}");
+            Console.WriteLine($"[MeteoAppSync] LocalWins: Sync download failed: {ex.Message}");
         }
     }
 
     private async Task SynchronizeRemoteWinsAsync()
     {
+        Console.WriteLine("[MeteoAppSync] RemoteWins sync...");
         DateTime lastSyncDate = Preferences.Default.Get("App_LastSync", DateTime.MinValue);
 
         try
@@ -153,11 +156,11 @@ public class AppwriteSyncService : ISyncService<LocationModel>
 
                 if (cloudItem.IsDeleted)
                 {
-                    await _localDatabase.DeleteAsync(cloudItem);
+                    await _localDatabase.PushDeleteAsync(cloudItem);
                 }
                 else
                 {
-                    await _localDatabase.SaveAsync(cloudItem);
+                    await _localDatabase.PushUpsertAsync(cloudItem);
                 }
             }
 
@@ -165,7 +168,7 @@ public class AppwriteSyncService : ISyncService<LocationModel>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Errore in fase di download sync: {ex.Message}");
+            Console.WriteLine($"[MeteoAppSync] RemoteWins: Sync download fail: {ex.Message}");
         }
 
         var pendingUploads = await _localDatabase.GetRecordsNeedingSyncAsync();
@@ -177,13 +180,13 @@ public class AppwriteSyncService : ISyncService<LocationModel>
                 if (item.IsDeleted)
                 {
                     await _remoteDatabase.PushDeleteAsync(item);
-                    await _localDatabase.DeleteAsync(item);
+                    await _localDatabase.PushDeleteAsync(item);
                 }
                 else
                 {
                     await _remoteDatabase.PushUpsertAsync(item);
                     item.NeedsSync = false;
-                    await _localDatabase.SaveAsync(item);
+                    await _localDatabase.PushUpsertAsync(item);
                 }
             }
             catch
@@ -195,6 +198,7 @@ public class AppwriteSyncService : ISyncService<LocationModel>
 
     private async Task SynchronizeLatestWinsAsync()
     {
+        Console.WriteLine("[MeteoAppSync] LatestWins sync...");
         var pendingUploads = await _localDatabase.GetRecordsNeedingSyncAsync();
 
         foreach (var item in pendingUploads)
@@ -203,14 +207,18 @@ public class AppwriteSyncService : ISyncService<LocationModel>
             {
                 if (item.IsDeleted)
                 {
+                    Console.WriteLine($"[MeteoAppSync] {item.Id} deleted local");
+
                     await _remoteDatabase.PushDeleteAsync(item);
-                    await _localDatabase.DeleteAsync(item);
+                    await _localDatabase.PushDeleteAsync(item);
                 }
                 else
                 {
+                    Console.WriteLine($"[MeteoAppSync] {item.Id} added local");
+
                     await _remoteDatabase.PushUpsertAsync(item);
                     item.NeedsSync = false;
-                    await _localDatabase.SaveAsync(item);
+                    await _localDatabase.PushUpsertAsync(item);
                 }
             }
             catch
@@ -219,12 +227,15 @@ public class AppwriteSyncService : ISyncService<LocationModel>
             }
         }
 
-        DateTime lastSyncDate = Preferences.Default.Get("LastSyncDate", DateTime.MinValue);
+        DateTime safeDefaultDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime lastSyncDate = Preferences.Default.Get("App_LastSync", safeDefaultDate);
 
         try
         {
             var cloudChanges = await _remoteDatabase.GetUpdatedSinceAsync(lastSyncDate);
             var localData = await _localDatabase.GetDataAsync();
+
+            Console.WriteLine($"[MeteoAppSync] {localData.Count()} : {cloudChanges.Count()} (local : cloud), {lastSyncDate}");
 
             foreach (var cloudItem in cloudChanges)
             {
@@ -235,11 +246,13 @@ public class AppwriteSyncService : ISyncService<LocationModel>
                     cloudItem.NeedsSync = false;
                     if (cloudItem.IsDeleted)
                     {
-                        await _localDatabase.DeleteAsync(cloudItem);
+                        Console.WriteLine($"[MeteoAppSync] {cloudItem.Id} deleted cloud");
+                        await _localDatabase.PushDeleteAsync(cloudItem);
                     }
                     else
                     {
-                        await _localDatabase.SaveAsync(cloudItem);
+                        Console.WriteLine($"[MeteoAppSync] {cloudItem.Id} added cloud");
+                        await _localDatabase.PushUpsertAsync(cloudItem);
                     }
                 }
             }
@@ -248,7 +261,7 @@ public class AppwriteSyncService : ISyncService<LocationModel>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Errore in fase di download sync: {ex.Message}");
+            Console.WriteLine($"[MeteoAppSync] LatestWins: Sync download fail: {ex.Message}");
         }
     }
 }

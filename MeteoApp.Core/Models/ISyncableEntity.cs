@@ -4,9 +4,8 @@ using System.Text;
 
 namespace MeteoApp.Core.Models;
 
-public interface ISyncableEntity
+public interface ISyncableEntity : IDatabaseEntity
 {
-    string Id { get; set; }
     DateTime UpdatedAt { get; set; }
     bool IsDeleted { get; set; }
     bool NeedsSync { get; set; }

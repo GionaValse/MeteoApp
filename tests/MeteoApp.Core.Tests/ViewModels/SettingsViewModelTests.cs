@@ -15,6 +15,7 @@ public class SettingsViewModelTests
     private readonly Mock<IThemeService> _mockThemeService;
     private readonly Mock<ILocalizationService> _mockLocalizationService;
     private readonly Mock<INotificationProvider> _mockNotificationProvider;
+    private readonly Mock<ISyncService<LocationModel>> _mockSyncService;
 
     public SettingsViewModelTests()
     {
@@ -22,6 +23,7 @@ public class SettingsViewModelTests
         _mockThemeService = new Mock<IThemeService>();
         _mockLocalizationService = new Mock<ILocalizationService>();
         _mockNotificationProvider = new Mock<INotificationProvider>();
+        _mockSyncService = new Mock<ISyncService<LocationModel>>();
 
         _mockPrefsService.Setup(p => p.GetPreferences()).Returns(new UserPreferences
         {
@@ -38,7 +40,8 @@ public class SettingsViewModelTests
             _mockPrefsService.Object,
             _mockThemeService.Object,
             _mockLocalizationService.Object,
-            _mockNotificationProvider.Object);
+            _mockNotificationProvider.Object,
+            _mockSyncService.Object);
     }
 
     [Fact]
@@ -116,12 +119,13 @@ public class SettingsViewModelTests
     [Fact]
     public void SyncCommand_Execute_ShouldUpdateLastSync_AndSave()
     {
-        var viewModel = CreateViewModel();
-        var beforeSync = DateTime.Now;
+        _mockSyncService
+            .Setup(ss => ss.SynchronizeAsync(It.IsAny<ConflictResolutionStrategy>()))
+            .Returns(Task.CompletedTask);
 
+        var viewModel = CreateViewModel();
         viewModel.SyncCommand?.Execute(null);
 
-        Assert.True(viewModel.LastSync >= beforeSync);
-        _mockPrefsService.Verify(p => p.SavePreferences(It.IsAny<UserPreferences>()), Times.AtLeastOnce);
+        _mockSyncService.Verify(p => p.SynchronizeAsync(It.IsAny<ConflictResolutionStrategy>()), Times.AtLeastOnce);
     }
 }

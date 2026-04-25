@@ -16,9 +16,10 @@ public class MeteoListViewModelTests
         // 1. ARRANGE
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
-        var mockDb = new Mock<ILocalDatabase>();
+        var mockSyncService = new Mock<ISyncService<LocationModel>>();
+        var mockPreferenceService = new Mock<IPreferencesService>();
 
-        var currentLocation = new LocationModel { Id = 1, Latitude = 46.0037, Longitude = 8.9511 };
+        var currentLocation = new LocationModel { Id = "1", Latitude = 46.0037, Longitude = 8.9511 };
         mockLocationProvider
             .Setup(p => p.GetCurrentLocationAsync())
             .ReturnsAsync(currentLocation);
@@ -27,19 +28,28 @@ public class MeteoListViewModelTests
             .Setup(ws => ws.GetNameByPostionAsync(currentLocation))
             .ReturnsAsync("Lugano");
 
+        var fakePreferences = new UserPreferences { 
+            Language = "en",
+            SyncStrategy = 0
+        };
+        mockPreferenceService
+            .Setup(pr => pr.GetPreferences())
+            .Returns(fakePreferences);
+
         var savedLocations = new List<LocationModel>
         {
-            new LocationModel { Id = 2, Name = "Roma", Latitude = 41.9, Longitude = 12.4 },
-            new LocationModel { Id = 3, Name = "Milano", Latitude = 45.4, Longitude = 9.1 }
+            new LocationModel { Id = "2", Name = "Roma", Latitude = 41.9, Longitude = 12.4 },
+            new LocationModel { Id = "3", Name = "Milano", Latitude = 45.4, Longitude = 9.1 }
         };
-        mockDb
-            .Setup(db => db.GetAllLocations())
-            .Returns(savedLocations);
+        mockSyncService
+            .Setup(sync => sync.GetLocalDataAsync())
+            .ReturnsAsync(savedLocations);
 
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object
+            mockSyncService.Object,
+            mockPreferenceService.Object
         );
 
         // 2. ACT
@@ -54,7 +64,7 @@ public class MeteoListViewModelTests
 
         mockLocationProvider.Verify(p => p.GetCurrentLocationAsync(), Times.Once);
         mockWeatherService.Verify(ws => ws.GetNameByPostionAsync(currentLocation), Times.Once);
-        mockDb.Verify(db => db.GetAllLocations(), Times.Once);
+        mockSyncService.Verify(db => db.GetLocalDataAsync(), Times.Once);
     }
 
     [Fact]
@@ -63,9 +73,10 @@ public class MeteoListViewModelTests
         // 1. ARRANGE
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
-        var mockDb = new Mock<ILocalDatabase>();
+        var mockSyncService = new Mock<ISyncService<LocationModel>>();
+        var mockPreferenceService = new Mock<IPreferencesService>();
 
-        var expectedLocation = new LocationModel { Name = "Napoli", Latitude = 40.8518, Longitude = 14.2681 };
+        var expectedLocation = new LocationModel { Id = "napoli", Name = "Napoli", Latitude = 40.8518, Longitude = 14.2681 };
 
         mockWeatherService
             .Setup(ws => ws.GetLocationByNameAsync("Napoli"))
@@ -74,7 +85,8 @@ public class MeteoListViewModelTests
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object
+            mockSyncService.Object,
+            mockPreferenceService.Object
         );
 
         // 2. ACT
@@ -84,7 +96,7 @@ public class MeteoListViewModelTests
         Assert.Single(viewModel.Locations);
         Assert.Equal("Napoli", viewModel.Locations[0].Name);
 
-        mockDb.Verify(db => db.SaveLocation(expectedLocation), Times.Once);
+        mockSyncService.Verify(sync => sync.UpsertAsync(expectedLocation), Times.Once);
     }
 
     [Fact]
@@ -93,7 +105,8 @@ public class MeteoListViewModelTests
         // 1. ARRANGE
         var mockLocationProvider = new Mock<ILocationProvider>();
         var mockWeatherService = new Mock<IWeatherService>();
-        var mockDb = new Mock<ILocalDatabase>();
+        var mockDb = new Mock<ISyncService<LocationModel>>();
+        var mockPreferenceService = new Mock<IPreferencesService>();
 
         mockWeatherService
             .Setup(ws => ws.GetLocationByNameAsync("Paperopoli"))
@@ -102,7 +115,8 @@ public class MeteoListViewModelTests
         var viewModel = new MeteoListViewModel(
             mockLocationProvider.Object,
             mockWeatherService.Object,
-            mockDb.Object
+            mockDb.Object,
+            mockPreferenceService.Object 
         );
 
         // 2. ACT & 3. ASSERT
@@ -110,6 +124,6 @@ public class MeteoListViewModelTests
             viewModel.InsertLocationAsync("Paperopoli"));
 
         Assert.Empty(viewModel.Locations);
-        mockDb.Verify(db => db.SaveLocation(It.IsAny<LocationModel>()), Times.Never);
+        mockDb.Verify(sync => sync.UpsertAsync(It.IsAny<LocationModel>()), Times.Never);
     }
 }

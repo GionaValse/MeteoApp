@@ -46,8 +46,9 @@ public static class MauiProgram
 
         // --- REGISTRATION CORE SERVICES ---
         builder.Services.AddSingleton<HttpClient>();
-        builder.Services.AddSingleton<ILocalDatabase<LocationModel>, Database>();
-        builder.Services.AddSingleton<IRemoteDatabase<LocationModel>, LocationRemoteDatabase>();
+        builder.Services.AddSingleton<IDatabase<TokenModel>, TokenRemoteDatabase>();
+        builder.Services.AddSingleton<ISyncableLocalDatabase<LocationModel>, LocationLocalDatabase>();
+        builder.Services.AddSingleton<ISyncableRemoteDatabase<LocationModel>, LocationRemoteDatabase>();
         builder.Services.AddSingleton<IWeatherService, WeatherService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
@@ -68,9 +69,6 @@ public static class MauiProgram
         // -- REGISTRATION BLAZZOR --
         builder.Services.AddSingleton<ParameterService>();
         builder.Services.AddMauiBlazorWebView();
-
-        // -- REGISTRATION APPWRITE --
-        builder.Services.AddSingleton<AppwriteDatabse>();
 
         return builder.Build();
 	}

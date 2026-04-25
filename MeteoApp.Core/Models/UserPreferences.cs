@@ -10,4 +10,5 @@ public class UserPreferences
     public bool NotificationsEnabled { get; set; }
     public DateTime LastSync { get; set; }
     public int Theme { get; set; }
+    public int SyncStrategy { get; set; }
 }

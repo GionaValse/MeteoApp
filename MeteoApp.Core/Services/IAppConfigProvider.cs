@@ -7,4 +7,7 @@ namespace MeteoApp.Core.Services;
 public interface IAppConfigProvider
 {
     string GetWeatherApiKey();
+    string GetAppwriteEndpoint();
+    string GetAppwriteProjectId();
+    string GetAppwriteApiKey();
 }

@@ -8,14 +8,14 @@ using System.Text;
 
 namespace MeteoApp.Services;
 
-public class LocationRemoteDatabase : IRemoteDatabase<LocationModel>
+public class LocationRemoteDatabase : ISyncableRemoteDatabase<LocationModel>
 {
     private readonly Client _client;
     private readonly Databases _databases;
     private readonly Account _account;
 
-    private const string DatabaseId = "IL_TUO_DATABASE_ID";
-    private const string CollectionId = "IL_TUO_COLLECTION_ID";
+    private const string DatabaseId = "69eb3a85003c837e6dd5";
+    private const string CollectionId = "locations";
 
     public LocationRemoteDatabase(IAppConfigProvider configProvider)
     {
@@ -27,9 +27,19 @@ public class LocationRemoteDatabase : IRemoteDatabase<LocationModel>
         _account = new Account(_client);
     }
 
-    public Task<IEnumerable<LocationModel>> GetUpdatedSinceAsync(DateTime lastSyncDate)
+    public async Task<IEnumerable<LocationModel>> GetDataAsync()
     {
-        throw new NotImplementedException();
+        return await FetchDataAsync(new List<string>());
+    }
+
+    public async Task<IEnumerable<LocationModel>> GetUpdatedSinceAsync(DateTime lastSyncDate)
+    {
+        List<string> queries = new List<string> 
+        { 
+            Query.GreaterThan("updateTime", lastSyncDate.ToString("o")),
+            Query.Limit(100)
+        };
+        return await FetchDataAsync(queries);
     }
 
     public async Task InitializeAsync()
@@ -60,8 +70,8 @@ public class LocationRemoteDatabase : IRemoteDatabase<LocationModel>
             { "name", entity.Name },
             { "lat", entity.Latitude },
             { "lon", entity.Longitude },
-            { "UpdatedAt", entity.UpdatedAt.ToString("o") },
-            { "IsDeleted", entity.IsDeleted }
+            { "updateTime", entity.UpdatedAt.ToString("o") },
+            { "isDeleted", entity.IsDeleted }
         };
 
         try
@@ -82,5 +92,40 @@ public class LocationRemoteDatabase : IRemoteDatabase<LocationModel>
                 data: documentData
             );
         }
+    }
+
+    private async Task<IEnumerable<LocationModel>> FetchDataAsync(List<string> queries)
+    {
+        var locations = new List<LocationModel>();
+
+        try
+        {
+            var response = await _databases.ListDocuments(
+                databaseId: DatabaseId,
+                collectionId: CollectionId,
+                queries: queries
+            );
+
+            foreach (var doc in response.Documents)
+            {
+                locations.Add(new LocationModel
+                {
+                    Id = doc.Id,
+                    Name = doc.Data.ContainsKey("name") ? doc.Data["name"].ToString() : string.Empty,
+                    Latitude = doc.Data.ContainsKey("lat") ? Convert.ToDouble(doc.Data["lat"]) : 0,
+                    Longitude = doc.Data.ContainsKey("lon") ? Convert.ToDouble(doc.Data["lon"]) : 0,
+                    UpdatedAt = doc.Data.ContainsKey("updateTime") ? DateTime.Parse(doc.Data["updateTime"].ToString()) : DateTime.MinValue,
+                    IsDeleted = doc.Data.ContainsKey("isDeleted") && Convert.ToBoolean(doc.Data["isDeleted"]),
+
+                    NeedsSync = false
+                });
+            }
+        }
+        catch (AppwriteException ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[MeteoAppSync] Error GetUpdatedSinceAsync: {ex.Message}");
+        }
+
+        return locations;
     }
 }

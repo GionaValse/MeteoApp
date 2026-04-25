@@ -54,6 +54,14 @@
                     <Label Text="{x:Static res:AppResources.data_sync}" FontAttributes="Bold" FontSize="18" />
 
                     <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                        <Label Text="Strategia Conflitti" VerticalOptions="Center" />
+                        <Picker x:Name="StrategyPicker"
+                                Grid.Column="1" 
+                                WidthRequest="150"
+                                SelectedIndex="{Binding SelectedSyncStrategyIndex}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, Auto" VerticalOptions="Center">
                         <Label Text="{x:Static res:AppResources.last_update}" VerticalOptions="Center" />
 
                         <Label Grid.Column="1" 

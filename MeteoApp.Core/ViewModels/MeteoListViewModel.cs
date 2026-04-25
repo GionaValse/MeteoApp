@@ -7,8 +7,9 @@ namespace MeteoApp.Core.ViewModels;
 public class MeteoListViewModel : BaseViewModel
 {
     private readonly ILocationProvider _locationProvider;
-    private readonly ILocalDatabase<LocationModel> _db;
     private readonly IWeatherService _weatherService;
+    private readonly ISyncService<LocationModel> _syncService;
+    private readonly IPreferencesService _preferencesService;
 
     private ObservableCollection<LocationModel> _locations;
     public ObservableCollection<LocationModel> Locations
@@ -24,17 +25,32 @@ public class MeteoListViewModel : BaseViewModel
     public MeteoListViewModel(
         ILocationProvider locationProvider,
         IWeatherService weatherService,
-        ILocalDatabase<LocationModel> database)
+        ISyncService<LocationModel> syncService,
+        IPreferencesService preferencesService)
     {
         _locationProvider = locationProvider;
         _weatherService = weatherService;
-        _db = database;
+        _syncService = syncService;
+        _preferencesService = preferencesService;
 
         Locations = new ObservableCollection<LocationModel>();
     }
 
     public async Task LoadAllLocationsAsync()
     {
+        Console.WriteLine($"[MeteoAppSync] LoadAllLocations....");
+        try
+        {
+            Console.WriteLine($"[MeteoAppSync] Sync...");
+            var strategyIndex = _preferencesService.GetPreferences().SyncStrategy;
+            var strategy = (ConflictResolutionStrategy)strategyIndex;
+            await _syncService.SynchronizeAsync(strategy);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[MeteoAppSync] Syncronization failed. Offline data only.: {ex.Message}");
+        }
+
         var tempStack = new List<LocationModel>();
 
         var currentLoc = await _locationProvider.GetCurrentLocationAsync();
@@ -46,7 +62,7 @@ public class MeteoListViewModel : BaseViewModel
             tempStack.Add(currentLoc);
         }
 
-        var data = await _db.GetDataAsync();
+        var data = await _syncService.GetLocalDataAsync();
         if (data != null)
             tempStack.AddRange(data);
 
@@ -61,7 +77,7 @@ public class MeteoListViewModel : BaseViewModel
         if (location == null)
             throw new KeyNotFoundException();
         
-        await _db.SaveAsync(location);
+        await _syncService.UpsertAsync(location);
         Locations.Add(location);
     }
 
@@ -69,7 +85,7 @@ public class MeteoListViewModel : BaseViewModel
     {
         if (location == null)
             return;
-        await _db.DeleteAsync(location);
+        await _syncService.DeleteAsync(location);
         Locations.Remove(location);
     }
 }

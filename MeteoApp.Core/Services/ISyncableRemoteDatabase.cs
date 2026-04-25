@@ -5,10 +5,7 @@ using System.Text;
 
 namespace MeteoApp.Core.Services;
 
-public interface IRemoteDatabase<T> where T : ISyncableEntity 
+public interface ISyncableRemoteDatabase<T> : IDatabase<T> where T : ISyncableEntity 
 {
-    Task InitializeAsync();
     Task<IEnumerable<T>> GetUpdatedSinceAsync(DateTime lastSyncDate);
-    Task PushUpsertAsync(T entity);
-    Task PushDeleteAsync(T entity);
 }

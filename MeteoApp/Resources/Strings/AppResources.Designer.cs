@@ -232,6 +232,33 @@ namespace MeteoApp.Resources.Strings {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Latest Wins.
+        /// </summary>
+        public static string sync_strategy_latest {
+            get {
+                return ResourceManager.GetString("sync_strategy_latest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Local Wins.
+        /// </summary>
+        public static string sync_strategy_local {
+            get {
+                return ResourceManager.GetString("sync_strategy_local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Remote Wins.
+        /// </summary>
+        public static string sync_strategy_remote {
+            get {
+                return ResourceManager.GetString("sync_strategy_remote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Dark.
         /// </summary>
         public static string theme_dark {

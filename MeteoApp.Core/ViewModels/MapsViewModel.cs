@@ -1,11 +1,12 @@
-﻿using MeteoApp.Core.Services;
+﻿using MeteoApp.Core.Models;
+using MeteoApp.Core.Services;
 
 namespace MeteoApp.Core.ViewModels;
 
 public class MapsViewModel : BaseViewModel
 {
     private IWeatherService _weatherService;
-    private ILocalDatabase _database;
+    private ISyncService<LocationModel> _syncService;
 
     private string _locationName;
     public string LocationName
@@ -23,10 +24,10 @@ public class MapsViewModel : BaseViewModel
 
     public MapsViewModel(
         IWeatherService weatherService,
-        ILocalDatabase database)
+        ISyncService<LocationModel> syncService)
     {
         _weatherService = weatherService;
-        _database = database;
+        _syncService = syncService;
 
         LocationName = "";
         Coordinates = "";
@@ -41,7 +42,7 @@ public class MapsViewModel : BaseViewModel
             if (location == null)
                 throw new KeyNotFoundException();
 
-            _database.SaveLocation(location);
+            await _syncService.UpsertAsync(location);
         } 
         catch (Exception e)
         {

@@ -189,4 +189,13 @@
   <data name="sync_now" xml:space="preserve">
     <value>Jetzt synchronisieren</value>
   </data>
+  <data name="sync_strategy_latest" xml:space="preserve">
+    <value>Letzte Änderung</value>
+  </data>
+  <data name="sync_strategy_local" xml:space="preserve">
+    <value>Lokal gewinnt</value>
+  </data>
+  <data name="sync_strategy_remote" xml:space="preserve">
+    <value>Cloud gewinnt</value>
+  </data>
 </root>

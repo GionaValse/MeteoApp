@@ -11,6 +11,7 @@ public class LocationModelTests
     {
         // Arrange
         string json = @"{
+            ""Id"": ""0"",
             ""name"": ""Lugano"",
             ""lat"": 46.0037,
             ""lon"": 8.9511
@@ -21,7 +22,7 @@ public class LocationModelTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(0, result.Id);
+        Assert.Equal("0", result.Id);
         Assert.Equal("Lugano", result.Name);
         Assert.Equal(46.0037, result.Latitude);
         Assert.Equal(8.9511, result.Longitude);

@@ -16,6 +16,13 @@ public partial class SettingsPage : ContentPage
             AppResources.theme_dark   
         };
 
+        StrategyPicker.ItemsSource = new List<string>
+        {
+            AppResources.sync_strategy_latest, 
+            AppResources.sync_strategy_local,  
+            AppResources.sync_strategy_remote  
+        };
+
         BindingContext = viewModel;
     }
 }
