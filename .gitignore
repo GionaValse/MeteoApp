@@ -597,5 +597,4 @@ FodyWeavers.xsd
 
 appsettings.json
 google-services.json
-
-C:
+serviceAccountKey.json
