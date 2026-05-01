@@ -10,4 +10,7 @@ public interface IAppConfigProvider
     string GetAppwriteEndpoint();
     string GetAppwriteProjectId();
     string GetAppwriteApiKey();
+    string GetAppwriteDatabaseId();
+    string GetAppwriteLocationCollectionId();
+    string GetAppwriteTokenCollectionId();
 }

@@ -34,4 +34,19 @@ public class MauiConfigProvider : IAppConfigProvider
     {
         return _configuration["MeteoApiKey"];
     }
+
+    public string GetAppwriteDatabaseId()
+    {
+        return _configuration["AppwriteDatabaseId"];
+    }
+
+    public string GetAppwriteLocationCollectionId()
+    {
+        return _configuration["AppwriteLocationCollectionId"];
+    }
+
+    public string GetAppwriteTokenCollectionId()
+    {
+        return _configuration["AppwriteTokenCollectionId"];
+    }
 }

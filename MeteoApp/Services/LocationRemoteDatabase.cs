@@ -2,9 +2,6 @@
 using Appwrite.Services;
 using MeteoApp.Core.Models;
 using MeteoApp.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MeteoApp.Services;
 
@@ -14,8 +11,8 @@ public class LocationRemoteDatabase : ISyncableRemoteDatabase<LocationModel>
     private readonly Databases _databases;
     private readonly Account _account;
 
-    private const string DatabaseId = "69eb3a85003c837e6dd5";
-    private const string CollectionId = "locations";
+    private readonly string DatabaseId;
+    private readonly string CollectionId;
 
     public LocationRemoteDatabase(IAppConfigProvider configProvider)
     {
@@ -25,6 +22,9 @@ public class LocationRemoteDatabase : ISyncableRemoteDatabase<LocationModel>
 
         _databases = new Databases(_client);
         _account = new Account(_client);
+
+        DatabaseId = configProvider.GetAppwriteDatabaseId();
+        CollectionId = configProvider.GetAppwriteLocationCollectionId();
     }
 
     public async Task<IEnumerable<LocationModel>> GetDataAsync()

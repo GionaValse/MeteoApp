@@ -14,8 +14,8 @@ public class TokenRemoteDatabase : IDatabase<TokenModel>
     private readonly Databases _databases;
     private readonly Account _account;
 
-    private const string DatabaseId = "69eb3a85003c837e6dd5";
-    private const string CollectionId = "usertokens";
+    private readonly string DatabaseId;
+    private readonly string CollectionId;
 
     public TokenRemoteDatabase(IAppConfigProvider configProvider)
     {
@@ -25,6 +25,9 @@ public class TokenRemoteDatabase : IDatabase<TokenModel>
 
         _databases = new Databases(_client);
         _account = new Account(_client);
+
+        DatabaseId = configProvider.GetAppwriteDatabaseId();
+        CollectionId = configProvider.GetAppwriteTokenCollectionId();
     }
 
     public async Task<IEnumerable<TokenModel>> GetDataAsync()
@@ -94,12 +97,7 @@ public class TokenRemoteDatabase : IDatabase<TokenModel>
         }
         catch (AppwriteException ex) when (ex.Code == 409)
         {
-            await _databases.UpdateDocument(
-                databaseId: DatabaseId,
-                collectionId: CollectionId,
-                documentId: entity.Id,
-                data: documentData
-            );
+            // Token già esiste, nessuna azione richiesta
         }
     }
 }
