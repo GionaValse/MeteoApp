@@ -25,4 +25,8 @@ public class LocationModel : ILocation, ISyncableEntity
     public bool IsDeleted { get; set; } = false;
 
     public bool NeedsSync { get; set; } = true;
+
+    [JsonIgnore]
+    [Ignore]
+    public bool Done => !NeedsSync;
 }
