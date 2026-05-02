@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:res="clr-namespace:MeteoApp.Resources.Strings"
+             x:Class="MeteoApp.MapPage"
+             Title="{x:Static res:AppResources.ExploreLocation}">
+
+    <Grid>
+        <maps:Map x:Name="MyMap" 
+              IsShowingUser="false" 
+              MapClicked="OnMapClicked"
+              MapType="Street" />
+
+        <VerticalStackLayout VerticalOptions="Start" 
+                         Margin="20,30,20,0" 
+                         Spacing="10">
+
+            <Frame CornerRadius="25" 
+               HasShadow="True" 
+               Padding="5,0" 
+               BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray600}}"
+               BorderColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}">
+
+                <SearchBar x:Name="LocationSearchBar"
+                       Placeholder="{x:Static res:AppResources.SearchCity}"
+                       SearchButtonPressed="OnSearchButtonPressed"
+                       BackgroundColor="Transparent" />
+            </Frame>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout VerticalOptions="End" 
+                         Margin="20,0,20,30">
+
+            <Frame CornerRadius="15" 
+               HasShadow="True" 
+               BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray600}}" 
+               BorderColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
+               Padding="15">
+
+                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+
+                        <Label x:Name="LocationNameLabel" 
+                           Text="{Binding LocationName}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" />
+
+                        <Label x:Name="CoordinatesLabel" 
+                           Text="{Binding Coordinates}" 
+                           FontSize="12" 
+                           TextColor="{StaticResource Gray500}" />
+                    </VerticalStackLayout>
+
+                    <Button Grid.Column="1" 
+                        Grid.RowSpan="2"
+                        Text="+" 
+                        FontSize="24"
+                        CornerRadius="24"
+                        HeightRequest="48"
+                        WidthRequest="48"
+                        Padding="0"
+                        VerticalOptions="Center"
+                        TextColor="{StaticResource White}"
+                        Background="{StaticResource Primary}"
+                        Clicked="OnAddLocationClicked" />
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
